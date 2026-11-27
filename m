@@ -1,59 +1,72 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795791581;
-	b=HqWTTA3x6PIC9rr9+1RCZY6R3mu55QULY5k01HamcC4NbgVWWFP3bqs4xYP7dFa4hKIa
-	 Kc56/DPDJS57x1612jtmajAWIcjNyo4oidLFXzLwSqsJrTCCQLg741XeI1JkO1spmzZET
-	 XAtNjPUZZYAbpkXZRjTtFsy9j3q876htdxk02HTSVGeBt97r6nodTP9ZUMYQWnKYTx4Gh
-	 mm7PBEVlWKwVClcWbA4Wqgrl1uKVaUnXk31+dQ+0fMvmrSeZ8nvgF7vV8020Lud0PGTpB
-	 G8fro2rioP3IPv84K1b1XdDnob1G93Xoxtid0c753ZFisyewrY5UFqKANEYW6Dkc4fQ==
+	t=1795791649;
+	b=JES70IaXfupOcLL4c4GBwKQZgtYb66om3Vlizd3fPktlmSPPn5PkWef6SOCcMKdZ8/S/
+	 hJmdYk4wsa3jA165UYUyEFplOPm3G2i9WtexeJHilyqm+UUpYhryqPbql2EsBe5bZwXdh
+	 qzYFTTKrph7NUFE7R2Qm4wXDUq3nHGK8kU1VSGOWHxDWcoXcFjnFaNGoQXlpXCKEtILkV
+	 KU/vN3XYlGZ66DsFICs64gRvIVwd0wyN9nf0ZUaXZnimw1Ofeh6aiXwrE5fjvwnSXmnpC
+	 rxBBWRDoG76gKwNo+Yl+ihpp/HER+woECzRdnVczWWwqZUfR04x54kDm0A8Lz+cW83g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795791581;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=aqgEGVY8i1oDSbWio1gHAr1fehWt8x39GITP8SJlzSE=;
-	b=lbFJe2MawbXZ0Rn/ukM6BcXYk+9VBPZDiD8gjhUmbTi7eRAQLEyUg57gX/pLWnGi1qd9
-	 h6boruh+pHGNlZSfFdJUmH57jywnsEhWVmHZviY2/Vi4CHK/Mz9GtBCTdtz3lNIN2Mrdl
-	 Y3P3g40YSr4ybWZEjQTqMSoKHSCPNqUUZZqnmH+4qycFSuFX4CmzZYxmBdNjaYLrm27Ro
-	 4RUR0oF3QFJhphWRxoXvsf8y4geb63F+wWdMsMHGU8qGWBdtNk2rxVyL4Y8y/gpCo61IO
-	 siV1FiwsTwdkknmZH4KN6t2e0FzGpnC2IxvROsJ7MywaZpfewa7fSwtuoukmDLP2ung==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795791649;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=eLcbyujfUpUezFzf+dyuSUdvtd7PBrhQqklGwJTYvrU=;
+	b=IRPj3VDDvGl7ulybuOMR+pHIEqFO1zeKpoNsBYQv3pSFPO+gO/4wGPDMhuzFCwSE8Usg
+	 1PjAEJT/qa/aQVPkJAA93R1akRoEK0vInBfoX3wvkTI8epXxvuiSXoWM74G84XZi1gSyV
+	 SKAfE7W/528EVlK/5zHrFeek7FO6ctvsw0fpK9esPnYGSPup0I528MaOspomtIPYwpVFl
+	 bqnbXjtswnSnFOVsNJfGnW0PzDDkYbGpYLZ8IWaIAVegY/hitm7cHaiW64RRd1x0NfqN2
+	 3dDeTz+inegVoDwp93INz1nrsLFVHut62bgkrl1bh8OBKLRhhhBIkRMGKQoIfpleIYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aguh6ksT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ilC/3IeW";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56AC606A31F;
-	Fri, 27 Nov 2026 14:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DEA606A31E;
+	Fri, 27 Nov 2026 15:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aguh6ksT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137691F000C1;
-	Fri, 27 Nov 2026 14:59:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ilC/3IeW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0051F00893;
+	Fri, 27 Nov 2026 15:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795791581;
-	bh=aqgEGVY8i1oDSbWio1gHAr1fehWt8x39GITP8SJlzSE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aguh6ksTBJes23HlW0mRkr8BD+U+1xIH7wndcu89stk2csFJmiTMzGpT1ePMSXRhM
-	 j0HliDhmcVEChZhVvTbkUCvQObMjnG9SksBitd37Yvc5XQaMmPNUIQZdBupp2k8Bdt
-	 eX/2A6Y1Sf1j1WXQHGrFWCcrL+qokQY+34EKMn2Y+yeX2MH2Tpdq9RyUFz9LDPpcje
-	 2prFAH0d630Km7x2kPsaFjDAOWH0ZxIrV8vDtQ6/1uLLEQdZVHGDgPc+GKyFoZx84B
-	 duo69t0q0pHV9QgTzwLeMfNISIdDVqxrOczbBFIFOVbCEzDf5bC+hb96SVoragMNt2
-	 p+eMWlOBrmXMQ==
-Date: Fri, 27 Nov 2026 14:59:34 +0000
-From: Lee Jones <lee@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: maz@kernel.org, andy@kernel.org, jic23@kernel.org,
-	dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
-	mfd@lists.linux.dev, linux-iio@vger.kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, crofts@kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	stable@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Subject: Re: [PATCH v5 3/4] mfd: mxs-lradc: Pass parent IRQs to child drivers
-Message-ID: <20261127145934.GW38590@joneslee-macbookpro.roam.internal>
-References: <20261119134041.16611-1-festevam@gmail.com>
- <20261119134041.16611-3-festevam@gmail.com>
+	s=k20260515; t=1795791648;
+	bh=eLcbyujfUpUezFzf+dyuSUdvtd7PBrhQqklGwJTYvrU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ilC/3IeW/OwB3WPoHlf9D6FzDd5BY8aQuQ5HEIWB9Zpomygj8Y8u8aVnq8wDqESVd
+	 iPhX9IPRqNWIMFfhEC1TNMH2CGHL5f411aolSajFEptnZU1y622XETeDe1CPwXvGRN
+	 0wAncTOlryTyaCCcggFLawODTmIu8ehc1BwZYdU+f7nm+lrJRtksEqRsGKOf9qHIbI
+	 9qQwj8uj3FnYrVJVcKOMLZNTvaDr99QOce93z5AnGW4yNnrIfhrB7/FzNjiBg0MVAX
+	 IWcpinXAYpJs5fTBo39DyaqEx/3oyeTt7Lhqqvf2aOXAgqcQ4lInNzXakVmnlYUsqT
+	 F02xFjf9TG9FQ==
+Message-ID: <sashiko-outbox-237658@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v2 19/35] spi: nxp-fspi: Reject mixed DTR modes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Mark Brown" <broonie@kernel.org>, "Liang
+ Yang" <liang.yang@amlogic.com>, "Feng Chen" <feng.chen@amlogic.com>, "Xianwei
+ Zhao" <xianwei.zhao@amlogic.com>, "Han Xu" <han.xu@nxp.com>, "Conor Dooley" <conor.dooley@microchip.com>, "Valentina
+ Fernandez" <valentina.fernandezalanis@microchip.com>, "Daire McNamara" <daire.mcnamara@microchip.com>, "Haibo
+ Chen" <haibo.chen@nxp.com>, "Jyan Chou" <jyanchou@realtek.com>, "Yu-Chun
+ Lin" <eleanor.lin@realtek.com>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre
+ Torgue" <alexandre.torgue@foss.st.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Michael
+ Walle" <mwalle@kernel.org>, "Takahiro Kuwano" <takahiro.kuwano@infineon.com>, "Richard
+ Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Tudor
+ Ambarus" <tudor.ambarus@linaro.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>, "Nicolas
+ Ferre" <nicolas.ferre@microchip.com>, "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Claudiu
+ Beznea" <claudiu.beznea@tuxon.dev>, "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino
+ Del Regno" <angelogioacchino.delregno@collabora.com>, "Yogesh Gaur" <yogeshgaur.83@gmail.com>, "Chris
+ Packham" <chris.packham@alliedtelesis.co.nz>, =?utf-8?b?Sm9uYXRoYW4gTmV1?=
+ =?utf-8?b?c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, "Michal Simek" <michal.simek@amd.com>
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Alvin Zhou" <alvinzhou@mxic.com.tw>, "Cheng
+ Ming Lin" <chengminglin@mxic.com.tw>, linux-amlogic@lists.infradead.org, imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, linux-mtd@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Frank.Li@kernel.org, neil.armstrong@linaro.org
+In-Reply-To: <20261127-macronix-upstreaming-spi-mem-cycles-v2-19-5c93f5e5d630@bootlin.com>
+References: <20261127-macronix-upstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com>
+ <20261127-macronix-upstreaming-spi-mem-cycles-v2-19-5c93f5e5d630@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 27 Nov 2026 15:00:45 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,37 +75,77 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261119134041.16611-3-festevam@gmail.com>
 
-On Thu, 19 Nov 2026, Fabio Estevam wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] spi: nxp-fspi: missing dummy.dtr check in
+  nxp_fspi_supports_op()
+--
 
-> The MFD driver stores raw DT interrupt indices in IRQ resources but
-> registers its child devices without an IRQ domain or IRQ base. The child
-> drivers consequently receive the indices as if they were mapped Linux
-> IRQ numbers. IRQ index 0 triggers the platform_get_irq_byname() warning:
-> 
->   0 is an invalid IRQ number
-> 
-> The children then try to recover the indices from their resources and
-> map them against the parent OF node. Besides duplicating IRQ names in
-> the parent and children, this relies on invalid platform IRQ resources
-> and fails when IRQ 0 is rejected.
-> 
-> Resolve the interrupts with platform_get_irq() in the MFD parent and
-> store the mapped IRQs in the shared LRADC data. Drop the child IRQ
-> resources and duplicated name arrays, and have both child drivers
-> request the mapped IRQs directly. Map the MMIO region once in the
-> parent and share the mapping with both child drivers through
-> struct mxs_lradc, removing the child memory resources.
-> 
-> Tested on an i.MX28 EVK. The mxs-lradc-ts driver probes successfully,
-> touch events are reported, and the touch-detect and LRADC channel 7
-> interrupt counters increase as expected.
+commit d17e73cd13692fc9ae92cbd1176efe56ea596829
+Author: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Doesn't apply to my tree.
+spi: nxp-fspi: Reject mixed DTR modes
 
--- 
-Lee Jones
+This commit adds checks in nxp_fspi_supports_op() to reject spi-mem
+operations that mix SDR and DTR phases.
+
+> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+> index e6fdded67a00e..04999369dd1bd 100644
+> --- a/drivers/spi/spi-nxp-fspi.c
+> +++ b/drivers/spi/spi-nxp-fspi.c
+> @@ -536,8 +536,18 @@ static bool nxp_fspi_supports_op(struct spi_mem *mem,
+>  				 const struct spi_mem_op *op)
+>  {
+>  	struct nxp_fspi *f =3D spi_controller_get_devdata(mem->spi->controller);
+> +	bool all_true, all_false;
+>  	int ret;
+> =20
+> +	all_true =3D op->cmd.dtr &&
+> +		   (!op->addr.nbytes || op->addr.dtr) &&
+> +		   (!op->data.nbytes || op->data.dtr);
+> +
+> +	all_false =3D !op->cmd.dtr && !op->addr.dtr && !op->data.dtr;
+> +
+> +	if (!all_true && !all_false)
+> +		return false;
+
+[Severity: Medium]
+Should all_true and all_false also check op->dummy.dtr when
+op->dummy.ncycles is non-zero?
+
+Because nxp_fspi_mem_caps sets dummy_cycles =3D true,
+spi_mem_convert_dummy() converts op->dummy.nbytes to op->dummy.ncycles and
+clears op->dummy.nbytes before nxp_fspi_supports_op() and
+spi_mem_default_supports_op() run.  Since spi_mem_default_supports_op()
+only checks op->dummy.nbytes, an operation whose dummy phase has a
+different DTR setting from the command, address, and data phases passes
+validation.
+
+Unlike other drivers that ignore op->dummy.dtr once dummy bytes are
+converted to cycles, this driver still uses op->dummy.dtr to program the
+LUT and to select the controller DTR mode and clock rate:
+
+drivers/spi/spi-nxp-fspi.c:nxp_fspi_prepare_lut() {
+    ...
+	if (op->dummy.ncycles) {
+		lutval[lutidx / 2] |=3D LUT_DEF(lutidx, op->dummy.dtr ? LUT_DUMMY_DDR : L=
+UT_DUMMY,
+    ...
+}
+
+drivers/spi/spi-nxp-fspi.c:nxp_fspi_select_mem() {
+    ...
+	/* flexspi only support one DTR mode: 8D-8D-8D */
+	bool op_is_dtr =3D op->cmd.dtr && op->addr.dtr && op->dummy.dtr && op->dat=
+a.dtr;
+    ...
+}
+
+Also note that all_true permits empty addr or data phases to have .dtr
+set to false, whereas op_is_dtr in nxp_fspi_select_mem() requires all four
+.dtr fields to be true unconditionally.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127-macronix-u=
+pstreaming-spi-mem-cycles-v2-0-5c93f5e5d630@bootlin.com?part=3D19
