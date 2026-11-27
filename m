@@ -1,99 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795802852;
-	b=D7kXaMqihZ+4fPKQHEY2+kVh2ESybiihBu7XAVm1oHVAeAlXgORQB6MKLg4bliD38yIJ
-	 Y5YGLxQok/HGusPeA5sKvGTY8AffguSmP9jGJdUiDPbx9Fh3XxNBmroa+9EWukYkpNI9s
-	 0415keZOqumyIwe06VcoT07mbPEUedKoC2D7GgfvoGKK/qYXtZxfOwzw6wX5CDQuf2xte
-	 BuG0vwbY7748mNCDzbu2UnkTJ7h8L3ZNaM9RJEM8E6PwZqQDsKcuKUpZLD7CYGW5VDhII
-	 CJZjEO1b0oxxoA/HZqyDRjCPKtDhRFEwSbc9PDRd6/0o5azHany/AVRJW8USmK42vcg==
+	t=1795812549;
+	b=CMKqAzAshX4EEAMk1cxtVVAL80G1x+lDwzemkdh5ePtpiN4f/fKRPhjAhgJQpXf5Kayw
+	 VZCpcSAo9wNn4ObYArkIqt377UnTlVwnK9hxBmltUH1UmyUnv2/ydOl1Cmz8FsK+cEaDe
+	 rejzJ0OJ7HzkBZOgZrTw4G91RhMsiwsJlpq7O7oheJrvRqlS/n7aO/EwuO18U/I63UVt7
+	 xqBwz/CZ72t7W67t8hnAM9GDh/H2uuf2Ki6ucpVCevL1wfXhR3sJGDptRBYSBtfYfcdS5
+	 OJrZbypNUmVrnT5Xp7N6/1itdFLipMEc0p19ZgpR7cxdanZFed9A8sTcODsf/Li4PjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795802852;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=FtPlK5CQKt8igbcY+UOchey7QbaopvckYCnGVzWNupE=;
-	b=Ne4tJv9Gw3fJoBGXapemrSIv1P+D9+O50xU4RtPdVjYO43+lhTBaWuHpSRUtnUf9UgRA
-	 suktfEAzDlIhcYi/n1eW5cayl1nB2U/byfh2nPVTcHiEaQMrFzgfsfJy7+jXMwikp2ZeB
-	 j4uGOfu5pzjaRE8Y0LiIxI4pPtQapiC1G8XHGPtphWIInIvCTujWhlmeuwRZaQQvBwU+l
-	 zlC0+0j+oR5J2Wzs2hX5B3NEehMn6r3+37qGdL0gJzSXKN7TtlPS8v+gufUc5c89x/Fxz
-	 usEZZH3/E2vDUNIj5Tcbj5CQd5dzjasC8JwR2reYiAL/fVpONLm4w8N5EZflLEYuYsg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795812549;
+	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type;
+	bh=I/iQhvx5aQ2OlsCDsvekZbVpxx0QTZL6M0gfbQ11gYw=;
+	b=WMZbhVjdRrYH5aQQM46UfoAOhj1pgeFSUIm1w3H5/SRIdQJteh61P5hYYRBFM1U0nh+M
+	 7DWgmBx5au6HKT59DR5zVgIOrX1q26+r0D8P65nBDjgZoflQd62T1f4bc3kP4pJ0xqSPr
+	 tUZdh4ODI5Nmf5Cx1NVl3QSdRfQ1C+qlbYXSN4+ujrzFE5EiBfY0opxDBKICHG0eH3ljj
+	 hnN2l1dBaQi43wQYxazxoSNCUDMEvqqoc6dDDRR2IWqlffpg6/eaWFnR0ROxwVj7mQ6CO
+	 iANISkuQDOfAHQWsJ6bgJxUP/gWVCOq80AT4/pvxIwODoK9RpZWepZiPLf6x4wfbFgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Da/7PkYw";
-	arc=none smtp.remote-ip=209.85.222.52
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=sntech.de;
+	spf=pass smtp.mailfrom=sntech.de;
+	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=m0JEwn4L;
+	arc=none smtp.remote-ip=185.11.138.130
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF20606A692
-	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 18:07:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDF20606A692
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFD9606A31C;
+	Fri, 27 Nov 2026 20:49:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEFD9606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Da/7PkYw
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-99e0db26c4bso2453202241.2
-        for <imx@lists.linux.dev>; Fri, 27 Nov 2026 10:07:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795802851; x=1796407651; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FtPlK5CQKt8igbcY+UOchey7QbaopvckYCnGVzWNupE=;
-        b=Da/7PkYw758ab3SqBMf7bTlvmWIqqq/+LLQ81Ssxy12EfzfZ0ihpoC53Q+bBCoKmIr
-         KcEVina+UM/T+sk68kpV3s6wi2YZ3sQZNFGr/A3gXykRGGAD0MgOEslonSbHQMiAyn88
-         b1hwdnqPloLOxMWOGyNmryRwa5r2bTs7eNluMlxmqgyxY6PjNKXvC5Ya7mrVdoAnON4v
-         b6HN14DP45LucSxZXtnk/Is6TSUd//1EwtRn4hc36GEHd86bQCMcRvwT/h609XqxzhdL
-         Gw3rUAuREGa5rUd8YU9gK9ubNmRKXryGKaPdD7m4hcYoHX+HBCxIDLjpSbLymXKhT+BL
-         4ODg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795802851; x=1796407651;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FtPlK5CQKt8igbcY+UOchey7QbaopvckYCnGVzWNupE=;
-        b=km71F4kKMP/kdWf8siOMvINrWx+irXMxlnnt5oiLvzrwFJk/IAYtBYRxg6Md4NIuOX
-         vA314Bk7ue0G5nhdpFYYeltIowcCIe+D5J2miWbUjA8sAwJXHSGCUNTC5/wFhy0EYCB8
-         tLI23hhbq7hYdb3qBCETllynaoXnmQPNemyd/c1afgUY7z4Pajxv7TQsLlVLYUlMY7yI
-         PUbmPALaGTidFthSYr19spbGqWGb1OlQcGnv8L3NVJ9bcuLoRutARY4+0XIKU11ITovP
-         OjmmXac9GZzfQBBdyMXBMLYVk3EVQ2V6Ji3WKrBpqH5Gm3Ked33p9mfzC6uDzYuKiz+A
-         4PIA==
-X-Forwarded-Encrypted: i=1; AL+hErGxIcXgyssbdjUR3Bvvu+dTtsUMKhEDSvEZa9FBxO9AAv4m3RCBZracP0wAHBk95SDtRGA=@lists.linux.dev
-X-Gm-Message-State: APuU4Z96TvjqxjxLKRv2GSgxuR3UxC1tISvkPPim4FEwzuflthD4ig2N
-	sR1WSVWNJwrizCjBc04o5zBHDUQdn2wrOu60iV67GzU+KmiGs0MwryGX
-X-Gm-Gg: AZFdTZcrxNvPXpQXUCuLaXZJal/qFjFliy9BDw3blQIpv9YR+9jh643L1qPbF7Y4efO
-	HiO4GIuemkl7HrRGUV6ZdEBnYr4TwhcxBK76ReckPGFQ2uKzKH9nGROgJ9tLYKNYQYkFMwoxkrv
-	JDk6zw0mo9OGacrSp87o0Yox6gm6I/fOefnzXQsqgyOsnA9+WTghasDDoOP4TLTI0kWzBSifD0K
-	LIT5chtdNY5h9UBB7Di2dUhmXmsA81gSEOBk9vL3vQhS1V67L6+6OB81a7s2ng2DSydYoILrIfM
-	QhhEOliLuXwkLLhcJnf1zHsPgPcc0SQ8dI45ZEXSNdX/Grm+3Ir0xtFVonMbQASM2lV0SjIOTKN
-	FBzEAM2Gi/OmIEhDzfWFhcVAJBsaiL5DuqsSJX5zZTzOmdflM7V/4bpkgzQQ0w1CtYVFFva8i9s
-	dLh6uSBEmSRTOGHbSROkJdAO0ZaH1krx7VNDvIlW3O1rccTUbf9r0QlYt9g70EhUpcdiF7kjZ6B
-	WJ+/ZIdCLakGvPPUVHeCXXUPEgGc7hX4d+oc3433tGKbkeuyXZmgcttN5cBd+gYtMrn4tzpSmmf
-	Lb5bAhoUqwxFGnIxQ69CF6ZE5p4zCbrdcuYDzpE/iAOlybvM2/D0RlZ5ADLQgKLWGJ37wzsNnBg
-	kDk8AHo7q4eTCe0RUFTCaTMoCAHifhbFe1xQpcQh+TUNbXA==
-X-Received: by 2002:a05:6102:f86:b0:7d6:5e38:3418 with SMTP id ada2fe7eead31-7d72b361662mr12116275137.1.1795802850643;
-        Fri, 27 Nov 2026 10:07:30 -0800 (PST)
-Received: from fabio-X870-EAGLE-WIFI7.tail2bb604.ts.net ([2804:1b3:a800:1256:3c75:eb0d:7d97:e4f8])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d6e8219b2esm26087020137.9.2026.11.27.10.07.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 10:07:30 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: lee@kernel.org
-Cc: jic23@kernel.org,
-	andy@kernel.org,
-	mfd@lists.linux.dev,
-	imx@lists.linux.dev,
-	Frank.Li@nxp.com,
-	Fabio Estevam <festevam@gmail.com>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Subject: [PATCH v6 2/2] mfd: mxs-lradc: Convert to devm_clk_get_enabled()
-Date: Fri, 27 Nov 2026 15:07:09 -0300
-Message-ID: <20261127180709.315826-2-festevam@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261127180709.315826-1-festevam@gmail.com>
-References: <20261127180709.315826-1-festevam@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=m0JEwn4L
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=I/iQhvx5aQ2OlsCDsvekZbVpxx0QTZL6M0gfbQ11gYw=; b=m0JEwn4L/M3iUnEEfvejx4e4uv
+	GIV+Egr5ar/2mNGt1Sx1i20zp5BuQKcSYeMK5gSdMoUFTAqrvf1pB62gYa3DdSSQPBek022Zs45Ub
+	M4OPsFWa52KC8gIaVdOAU6qe2n8m3iCrLN3V92aka61o5S9DwcTDKLD8TapjYegb5AcUbQGWdOXTq
+	ZNlCOvmlZw8XnQwfGm6acLsBHG6/wRn01Jqmn+90W+++BUZsG3hM+64FStI14cm67jnguR3dpL28N
+	Rz6Dcj7X4oQB2nR26fnBc1hVUrVeZ6Kh3lYRdKcURJNQsIk9PvVwfPWb7bTIZOvVuRcXOgNulCDd3
+	Ro+Jgahw==;
+From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
+To: Mark Brown <broonie@kernel.org>, ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/1] spi: fsl-lpspi: add atomic transfer support
+Date: Fri, 27 Nov 2026 21:49:00 +0100
+Message-ID: <r1SUq7cwQAKEFTBObqhYYA@sntech.de>
+In-Reply-To: <20261127073454.351296-2-chunyuzhiqiang@yinhe.ht>
+References:
+ <20261127073454.351296-1-chunyuzhiqiang@yinhe.ht>
+ <20261127073454.351296-2-chunyuzhiqiang@yinhe.ht>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -103,102 +62,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-The LRADC clock is acquired with a managed helper but enabled and
-disabled manually.
+Am Freitag, 27. November 2026, 08:34:54 Mitteleurop=C3=A4ische Normalzeit s=
+chrieb ChunYuZhiQiang:
 
-Acquire the LRADC clock with devm_clk_get_enabled() instead of a bare
-devm_clk_get() followed by a manual clk_prepare_enable(), so it is
-prepared/enabled for the device lifetime and released on unbind.
+> This patch was prepared with AI assistance; the submitter must review it
+> before submission.
 
-This conversion makes the code simpler.
+This sentence is very confusing.
 
-Suggested-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
-Changes since v5:
-- None.
+So an LLM generated this. Did you actually review what was generated?
 
- drivers/mfd/mxs-lradc.c | 35 +++++++----------------------------
- 1 file changed, 7 insertions(+), 28 deletions(-)
+Because this looks more as an instruction for you as the submitter, so
+I would assume this line not "surviving" the review step, if it happens.
 
-diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
-index aa55f88399ef..c3dd2d80e7f1 100644
---- a/drivers/mfd/mxs-lradc.c
-+++ b/drivers/mfd/mxs-lradc.c
-@@ -160,17 +160,10 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 	if (IS_ERR(lradc->base))
- 		return PTR_ERR(lradc->base);
- 
--	lradc->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(lradc->clk)) {
--		dev_err(dev, "Failed to get the delay unit clock\n");
--		return PTR_ERR(lradc->clk);
--	}
--
--	ret = clk_prepare_enable(lradc->clk);
--	if (ret) {
--		dev_err(dev, "Failed to enable the delay unit clock\n");
--		return ret;
--	}
-+	lradc->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(lradc->clk))
-+		return dev_err_probe(dev, PTR_ERR(lradc->clk),
-+				     "Failed to get and enable the delay unit clock\n");
- 
- 	ret = of_property_read_u32(node, "fsl,lradc-touchscreen-wires",
- 					 &ts_wires);
-@@ -193,8 +186,7 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev,
- 				"Unsupported number of touchscreen wires (%d)\n"
- 				, ts_wires);
--			ret = -EINVAL;
--			goto err_clk;
-+			return -EINVAL;
- 		}
- 	} else {
- 		lradc->buffer_vchans = BUFFER_VCHANS_ALL;
-@@ -204,29 +196,17 @@ static int mxs_lradc_probe(struct platform_device *pdev)
- 
- 	ret = mxs_lradc_get_irqs(pdev, lradc, data);
- 	if (ret)
--		goto err_clk;
-+		return ret;
- 
- 	num_cells = lradc->touchscreen_wire ? ARRAY_SIZE(mxs_lradc_cells) : 1;
- 	ret = devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE,
- 				   mxs_lradc_cells, num_cells, NULL, 0, NULL);
- 	if (ret) {
- 		dev_err(dev, "Failed to add subdevices\n");
--		goto err_clk;
-+		return ret;
- 	}
- 
- 	return 0;
--
--err_clk:
--	clk_disable_unprepare(lradc->clk);
--
--	return ret;
--}
--
--static void mxs_lradc_remove(struct platform_device *pdev)
--{
--	struct mxs_lradc *lradc = platform_get_drvdata(pdev);
--
--	clk_disable_unprepare(lradc->clk);
- }
- 
- static struct platform_driver mxs_lradc_driver = {
-@@ -235,7 +215,6 @@ static struct platform_driver mxs_lradc_driver = {
- 		.of_match_table = mxs_lradc_dt_ids,
- 	},
- 	.probe = mxs_lradc_probe,
--	.remove = mxs_lradc_remove,
- };
- module_platform_driver(mxs_lradc_driver);
- 
--- 
-2.43.0
+
+Heiko
+
+
 
