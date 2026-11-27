@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795771127;
-	b=RpFnMMVQrj0LhEdPQR78gk22K2ictm+GziyazX47AFkVLQEzvJt7yUf2e8zvUmJ03DK7
-	 GE5WKBCa6h6yjB/lhvoBZYKjzkjamuE7EYV2+LYC4+9ItCcnJGYLrOi1SS4bPIlQb4vy3
-	 koLoLGkLK0wE+r5mgXsIkwZcjdiI6rFcSsL2mF8RUKSU1QkSAQdCNp1pkb2E2y3z2B/sQ
-	 zo8SpDYV8fM8O+tQMQd9QUYr8NOqWRwwKtbnd4Fi8mfdocpotVA2eUSYqdZlSyZjALugF
-	 YW5TW0DLS98ExSb5vXAB1o44iAxrZkOMKE5sso/MMhwJe00ExOtU7E9EPUl6SgzhbRg==
+	t=1795771423;
+	b=2h7Q1wo3p35Os+FYFrij8OHfpUqdrOJNT4vOAGmNa1WoPsj6pg7Y2Bjh9h5TF1LfiZ3N
+	 OkRGo4eRqvb08VfBhEAc0WP8I6590j8gRsh3mAwxQL6nkrxg2y7OEq6ATQpwDPhFTObUh
+	 rk73HiPtXASSTQUbFnUwQJFwy4fsuq0WnOUiBDJ3BTIZAHTrA6rw4nrl2dycD2bKWFZ0N
+	 VVv34E44hvpQyoVIcRV3o80GoMVZzf8t0CP+lnoH994Sua/2K+bYW7k97ZnyUWucytAuQ
+	 uWMIKzxZDIMLmLyHVOUtBvXqAVW1MzQPpcdY6qJgxc7K81GC77+bnXb0NOkFTpb4Ldw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795771127;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795771423;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Last-TLS-Session-Version;
-	bh=Qefky8DlOTxPLdU0/wjWVMxmJw9tcsyvpnNkmobea1s=;
-	b=iY0daOlXZ3vmjxkxLvZf+4VW9G6qJ5uI8/nAKhKNbOg2XRl3cUNiJadGadNkfKHncy80
-	 uck3KNJJ2O0OCoLpxgIJ3H09beoV+iWF0WG56FDfXqfilDIMbo7s/H7rhAVSQ1LCqB+Yi
-	 BYQNFD88bjs8bCHfRy2o/f6bilQ2uqtZwmzMMdi9c81bS5SWb3OJsnpX5O/OxlpwY33FE
-	 lc7GUo6WI6zNUkwKoZ3S+53DROtkgThgTIspQFXaEZD8+lBOCwFjlLc8XaW0f5f4aLhUb
-	 n9vkarjNS6zbzYtLM9Y/lvjw4M7tIRXeeNjxo0nH3jZU687Yhd7ZU/VTOfH/oUxIucQ==
+	bh=PH+l0IfQ28b7UEDSOlC/cTnR6aoCEbyBOr2fiW8TlTU=;
+	b=5Vk0AZvm1UxQkPu8NIJkRqkH3AN3HIHu9P08Vr6f7cBjLm1sTDXs4HbdWbBdj+BF8J2i
+	 9Ov5lylZZbY7WQmxXCBl7afd3dzrI8+eVrA+3T4Lpy+32nlqX6HAItRhOR+MwZMWCTTXs
+	 KnSpv3EzP+Q9dK5yn/Ry72WELpQzYqaWanNeZU69cQ34+CYUG+/zv7eZInTcxLbtJ/DVZ
+	 vtxMJ6gPPd6Z0EqKR0KrmYVBVg9XqBYDBk0mGAyClQjuSefmV5rQKMRTPvzDaBi/k1URl
+	 XCWssd6XzAjcS1FtTHGJe2IVFeKvzbzGZQHBHxcwGKALx3HqMZvl+VWqpb1EM68EN/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=eU5PjGfK;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ff2U6hPn;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DB3606A326
-	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 09:18:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38DB3606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2E9606A31C
+	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 09:23:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A2E9606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=eU5PjGfK
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ff2U6hPn
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 5ECA5C62216;
-	Fri, 27 Nov 2026 09:18:52 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6BEF04E41795;
+	Fri, 27 Nov 2026 09:23:41 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9DB3C6049C;
-	Fri, 27 Nov 2026 09:18:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8576D11E69295;
-	Fri, 27 Nov 2026 10:18:34 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3FD5D6049C;
+	Fri, 27 Nov 2026 09:23:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 997C311E69295;
+	Fri, 27 Nov 2026 10:23:30 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795771121; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795771419; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Qefky8DlOTxPLdU0/wjWVMxmJw9tcsyvpnNkmobea1s=;
-	b=eU5PjGfK1Jl0gedKPU+OWMgLDwNMSEJI7XN2PpMliih5+m/3v/15bPtoXKqnsIg1adOG9b
-	CX+1sL8sBWMl8FCR2Q1oZXjeuEazaHOJF7d0DBG0D4OK0chVYD9dL3txls4r1kGcE9HATF
-	G9eGFbs5Ldi1vJ/asLwHUmi3vbXWtdFbVeGH+JeyOa7gLemLsls7CTjOCUskn3q7I2yp7x
-	zDpxxm7HjFc9pvXIJ6jOKHdFsylL0Xww2reWHt31RQuZ65TBRg3s4SFFRHa1kWrHm6/OWp
-	oHUl7ffFwhYj/ayjOmKF90LDZzTRdFAyout1I03RP2ifRDoc32vCilMejmHuTw==
+	bh=PH+l0IfQ28b7UEDSOlC/cTnR6aoCEbyBOr2fiW8TlTU=;
+	b=ff2U6hPnfdWAVrHeE+QURp8p7spbk1dJChI6RpTqx3eZ6Z3NSmqEVqcsrKBWqUpqwxoqWW
+	zc/fJA/3RG5rOfbi3GI0F41sSS9iHwSig5LSCGt1aXBDcpRxI3DT8e8RJknK0sQbIl5kfU
+	fdQvbBmJgmrJbK1tkN+JTKCuLjWJUt8EV3cO/KgSmj55J+HF2kejPGpxpzQJlPHmgFegnn
+	gT98jrBXT2PzOH6AL4wHjqlAbY+tfPkFyNcwy0ZMUmc8pSVOvdPYHQMXQlEU96yCUjPdH1
+	ZbVOCf20wWo+PSdFfV0SZC2WzOlKgPtH9tgx0ynelI4M7dV1719v3WkwGWwZmw==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Bough Chen <haibo.chen@oss.nxp.com>
 Cc: Mark Brown <broonie@kernel.org>,  Liang Yang <liang.yang@amlogic.com>,
@@ -71,16 +71,16 @@ Cc: Mark Brown <broonie@kernel.org>,  Liang Yang <liang.yang@amlogic.com>,
   imx@lists.linux.dev,  linux-riscv@lists.infradead.org,
   linux-stm32@st-md-mailman.stormreply.com,
   linux-arm-kernel@lists.infradead.org,  linux-mtd@lists.infradead.org
-Subject: Re: [PATCH RFC 01/16] spi: spi-mem: Handle a corner case while
- sanitizing ops
-In-Reply-To: <20261127084643.ekeao335mv5n5kow@shlinux89> (Bough Chen's message
-	of "Fri, 27 Nov 2026 16:46:43 +0800")
+Subject: Re: [PATCH RFC 02/16] spi: spi-mem: Stop checking the dummy
+ buswidth against board wiring
+In-Reply-To: <20261127085359.euu6z5rydr655ycr@shlinux89> (Bough Chen's message
+	of "Fri, 27 Nov 2026 16:53:59 +0800")
 References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-	<20261125-macronix-upstreaming-spi-mem-cycles-v1-1-fd036402fd37@bootlin.com>
-	<20261127084643.ekeao335mv5n5kow@shlinux89>
+	<20261125-macronix-upstreaming-spi-mem-cycles-v1-2-fd036402fd37@bootlin.com>
+	<20261127085359.euu6z5rydr655ycr@shlinux89>
 User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Fri, 27 Nov 2026 10:18:33 +0100
-Message-ID: <87bj7avdhy.fsf@bootlin.com>
+Date: Fri, 27 Nov 2026 10:23:30 +0100
+Message-ID: <875wxivd9p.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -94,82 +94,31 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello,
 
-> On Wed, Nov 25, 2026 at 06:51:15PM +0100, Miquel Raynal wrote:
->> Some mixed mode operations (such as 1S-xD-yD) will be flagged with
->> op_is_dtr but will not enter the ODTR checks. As a result, the number of
->> command bytes will never be checked.
->>=20
->> Reorganize a little bit this helper:
->> - If the operation contains a DTR phase, sanitize it.
->> - Then sanitize the op, should it be:
->>   - ODTR (8D-8D-8D)
->>   - anything else
->>=20
->> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
->> ---
->>  drivers/spi/spi-mem.c | 28 ++++++++++++++--------------
->>  1 file changed, 14 insertions(+), 14 deletions(-)
->>=20
->> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
->> index 8047b7508c8d..c64e906ba919 100644
->> --- a/drivers/spi/spi-mem.c
->> +++ b/drivers/spi/spi-mem.c
->> @@ -170,6 +170,7 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
->>  	struct spi_controller *ctlr =3D mem->spi->controller;
->>  	bool op_is_dtr =3D
->>  		op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr;
->> +	bool op_is_odtr =3D op->cmd.dtr && op->cmd.buswidth =3D=3D 8;
+>> -	if (op->dummy.nbytes &&
+>> -	    spi_check_buswidth_req(mem, op->dummy.buswidth, true))
+>> -		return false;
+>> +	/*
+>> +	 * The dummy phase implies no actual transmission nor reception.
+>> +	 * Its buswidth therefore does not matter much.
+>> +	 */
 >>=20=20
->>  	if (op_is_dtr) {
->>  		if (!spi_mem_controller_is_capable(ctlr, dtr) && !ctlr->dtr_caps)
->> @@ -177,23 +178,22 @@ bool spi_mem_default_supports_op(struct spi_mem *m=
-em,
->>=20=20
->>  		if (op->data.swap16 && !spi_mem_controller_is_capable(ctlr, swap16))
->>  			return false;
->> +	}
->>=20=20
->> -		/* Extra 8D-8D-8D limitations */
->> -		if (op->cmd.dtr && op->cmd.buswidth =3D=3D 8) {
->> -			if (op->cmd.nbytes !=3D 2)
->> -				return false;
->> -
->> -			if ((op->addr.nbytes % 2) ||
->> -			    (op->dummy.nbytes % 2) ||
->> -			    (op->data.nbytes % 2)) {
->> -				dev_err(&ctlr->dev,
->> -					"Even byte numbers not allowed in octal DTR operations\n");
->> -				return false;
->> -			}
->> -		}
->> -	} else {
->> +	if (!op_is_odtr) {
->>  		if (op->cmd.nbytes !=3D 1)
->>  			return false;
->
 > Hi Miquel,
 >
-> So this change means no nbytes limitation for mixed mode oparations, such=
- as 1S-1D-8D. Is it correct?
-> I go through spi-nor and spi-nand driver, seems for spi-nor, for DTR mode=
-, it only support 8D-8D-8D mode,
-> but for spi-nand, I notice some winbond W35N chips did support not only 8=
-D-8D-8D mode, but also some mixed
-> mode, including 1S-1D-8D. Does this 1S-1D-8D mode really has no such limi=
-tation for address and data length?
-> Address and data are indeed in DTR mode.
+> With this change, do you plan to add the linked patch back?
+> Setting the dummy buswidth to match the data buswidth is more reasonable.
 
-That is a very good point. I don't think the sanitizer ever did check
-that though. I believe we should in the end have a more "per-phase"
-approach, where we check all these individually.
+No I do not. Doing this would only paper over the problem for certain
+cases and would for instance break many of the SPI NAND cases. Those
+chips currently derive a number of dummy bytes based on the dummy
+buswidth, which is the same as in the address phase. So changing this in
+spi-mem or drivers would break this assumption. Either your controller
+has a cycle oriented dummy phase, in which case there should be no
+problem once converted (see the patches below) or it is byte oriented
+and the mode should likely be refused.
 
-There is also an implicit assumption that buswidth will only increase
-(eg not 1-4-1) and DTR capability will not disappear (eg no S-D-S).
-
-I guess we need to add more patches to make all these situations covered
-and avoid having drivers checking for them.
+But maybe if you tell me what you have in mind we can search for a
+solution for it.
 
 Thanks,
 Miqu=C3=A8l
