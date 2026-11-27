@@ -1,49 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=94.124.121.40
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795784417;
-	b=VKiufyie/mUkktXirZXoXs+a2cJ+9FuzI34MoI7ASu35j9ac32Kz3n5ccdN/MkOFlhg3
-	 bpd+wNxA9LSvXKqZLlPNhAP+M5TOQ7I0nNNL5w5ctMHXlBqT0TexPETV/uFvhgBRlm+YC
-	 SRQsQahh5tpKbruoP75MZ9xLGmuxKzCGX0Z61erFKwnFDAVs8SemkDmoT0pdoVne+JuL6
-	 GKlZFiZuCZiIKekD/jlHYJKZfXtLw/1OsrQW2+UCztaNAweJfKTDpLqr7NNrqQJNCJ4Xt
-	 hw+yJtCbDv0HczNn6ojEq5R9Fz3wZ27Pkr40grnq1uZ1ogVHg+KlaDG5dMd+/aYMoaA==
+	t=1795784593;
+	b=yszLD60kirMC2+NLZiWEE7aEZtKFTRNDGRnlHKCbIdHvJ028q3XwaUaU4vXaVD6hnINt
+	 1yWyWlFJ9Zl0OfODt9ZnoJwwuVMFvyuu0xH4evOhuIN1NsIzanAT140EqDtTVSdRf3LYq
+	 +r64s/exzwJL87CEQiZKE8vk7DyCsXrEuHSRnSkJYqntKlbzbT0QFxuVIFrsIfMPO2W30
+	 O5rE3SF9lAXyFsDh6c+cwzc8fcUyBYJacps7SUtZPzfupkSQPCFtsp4T27F2RbO9lGaiG
+	 9g2UCfuflIOd0ycSQWfQsUWKJZowcbBiVRC8ahIOvNUxrYNmpKLl/7rbADrM4XUssPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795784417;
-	h=DMARC-Filter:DKIM-Signature:X-MSG-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
-	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=osCZa1wC+Zvu9D8Dq/xApsZMIP//8BE/s4RirJrsI2Q=;
-	b=lcevmf/7A6qxQeUUuNro8XUAVlIGIbzfY8TjynQPBRDtTADsTb0WI4d1bd00sjSkwszh
-	 +7UsKwV3My6UVcu8IsxKvABRnhA3cQESzDcTqcQkagZtAEWcnKHXMggJjaHN5yqbbrjEu
-	 M5BzMlCP0SS3ycimVSd8po9G3OfCTqlUQ1RVEAJyHx7vFIGgAPLNH88fytsA2mRysrxt2
-	 dBzfmH/qw0mZ9IC0CUkH6urPziA9tWOgcQ/FBk1ZvryOiF2Vsu6qvizqWx9mx+DpOjcEz
-	 r8AUsq8CY2oJ+i3wMJELjHoNs2XBcWpj6jYo7ceuKCt2D+qg/dIrEIBxfu0hy7K20kA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795784593;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=7UVakvOp4wpiznroxVZYXkTEATKSGQujHq3lj0XSlRk=;
+	b=CokmzbNiryLtNxuxLXo0KcXQBBrv9Hlyk50qt8CRYXXf3SXplXaRZSN6uHmG/o5aanN+
+	 R0YI8LRNDFPauRthjSlC1o+bjf5THg2rvEfSw7jmo7EHDYNjl5AzpaeZlWMtXQxftpXc2
+	 S6uGXG6MgAdF8AgM/+1z3HvIz90MPg01Okd+uNuaFFyo1E9DU1egCZDN9c1GCuRQF9pMs
+	 VqTVrZrFF7fgqAxEcHk45RZJti/6EhH+EYUqTsva52na7V7Z71mbZC2DlvE9RXAtdhHYY
+	 skwntQRJXykgOig4/DkyUCrHK5Ntwd0ACD8wzwuKKXzRUe+QqvEsbARj27RB2tQsKPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=zanders.be;
-	spf=pass smtp.mailfrom=zanders.be;
-	dkim=pass header.d=zanders.be header.i=@zanders.be header.a=rsa-sha256 header.s=202002 header.b=RuJ9kj5Y;
-	arc=none smtp.remote-ip=94.124.121.40
-Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [94.124.121.40])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=cM5VgeY6;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06751606A324
-	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 13:00:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06751606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zanders.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zanders.be
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C02606A31E
+	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 13:03:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0C02606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=zanders.be header.i=@zanders.be header.a=rsa-sha256 header.s=202002 header.b=RuJ9kj5Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=zanders.be; s=202002;
-	h=message-id:date:references:in-reply-to:cc:to:from:subject:
-	 content-transfer-encoding:content-type:mime-version:from;
-	bh=osCZa1wC+Zvu9D8Dq/xApsZMIP//8BE/s4RirJrsI2Q=;
-	b=RuJ9kj5Y2L6gy8CzNDv5KC21f0vdqzHAs+tLCQ9bvNOA7E7s+P3WKWTAJxKgVM5IWT/C1q2tXB16F
-	 wxSScPDQxhX9eTDfH8OPDLJbnidzJ+Ys7SUmyG4HG03hz4FLo2yTVG6Qjo0IY2YPJDPlxGd1qY+wNf
-	 A5VOBgIwPp2Ho9czxEv4fYxzCOxlzrx09r8OrlQ9+07oyMgqNSwykbAw+ZpS8Gi0K4/A4B6OKvpFx8
-	 nMGJGHR8N31/B/ipx6NcOOfDQmo9RuChqPOLiQRLRe35MV8GgIrkGRvqElRUUILuWPsu3vB7oSEBb7
-	 +gsDhClb3t4qAi/Dzd6drO1NpoYahFg==
-X-MSG-ID: 665eb1ad-ea62-11f1-be32-0050568164d1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=cM5VgeY6
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7F5B91A1839;
+	Fri, 27 Nov 2026 13:03:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4DDF06049C;
+	Fri, 27 Nov 2026 13:03:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F79011E68760;
+	Fri, 27 Nov 2026 14:02:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795784584; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7UVakvOp4wpiznroxVZYXkTEATKSGQujHq3lj0XSlRk=;
+	b=cM5VgeY6Qci2ljmxqJH2dWDlf8hXi2XInC/iuzimk3N43ziiTXtiMMiKedJf5R5pYNvGxo
+	Ba144VRx1Z4nzcfrgeAwVxPCnf67yr8iKuUVCrqJhp8X8vYXfT7cuoRwDd++MeDSNAYXqB
+	dcrSTVCBTamAakYw3wbGqr6fxQZufiwpAjnm1GQh990665j2EmAE3ONzv+S26KrJozd0CU
+	uE5nvBl438K4yS5xx8AciV3xr3B1IjR5frJp3hnbF2Fbsr7xDsk98qp9HhCPupN0sWxEzN
+	XAe4fBjrLxm8X48WHk4LSNUBBZvWJApyARHisZtjduTr56v2v3QlnPTY4BIAbA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: Mark Brown <broonie@kernel.org>,  Liang Yang <liang.yang@amlogic.com>,
+  Feng Chen <feng.chen@amlogic.com>,  Xianwei Zhao
+ <xianwei.zhao@amlogic.com>,  Han Xu <han.xu@nxp.com>,  Conor Dooley
+ <conor.dooley@microchip.com>,  Valentina Fernandez
+ <valentina.fernandezalanis@microchip.com>,  Daire McNamara
+ <daire.mcnamara@microchip.com>,  Haibo Chen <haibo.chen@nxp.com>,  Jyan
+ Chou <jyanchou@realtek.com>,  Yu-Chun Lin <eleanor.lin@realtek.com>,
+  Maxime Coquelin <mcoquelin.stm32@gmail.com>,  Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,  Pratyush Yadav <pratyush@kernel.org>,
+  Michael Walle <mwalle@kernel.org>,  Takahiro Kuwano
+ <takahiro.kuwano@infineon.com>,  Richard Weinberger <richard@nod.at>,
+  Vignesh Raghavendra <vigneshr@ti.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Alvin Zhou <alvinzhou@mxic.com.tw>,
+  Cheng Ming Lin <chengminglin@mxic.com.tw>,  linux-spi@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-amlogic@lists.infradead.org,
+  imx@lists.linux.dev,  linux-riscv@lists.infradead.org,
+  linux-stm32@st-md-mailman.stormreply.com,
+  linux-arm-kernel@lists.infradead.org,  linux-mtd@lists.infradead.org
+Subject: Re: [PATCH RFC 00/16] spi: spi-mem: Express the dummy phase using
+ cycles when relevant
+In-Reply-To: <41962155-e78d-46b2-a58d-45282fdf1cca@linaro.org> (Tudor
+	Ambarus's message of "Fri, 27 Nov 2026 11:33:09 +0200")
+References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
+	<41962155-e78d-46b2-a58d-45282fdf1cca@linaro.org>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Fri, 27 Nov 2026 14:02:54 +0100
+Message-ID: <87cxrqtojl.fsf@bootlin.com>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -53,34 +89,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mtd: rawnand: gpmi: fix probe error path when
- CONFIG_PM=N
-From: Maarten Zanders <maarten@zanders.be>
-To: Yige Jiang <yigejiang86@gmail.com>
-Cc: Han Xu <han.xu@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>, 
- Maarten Zanders <maarten@zanders.be>, imx@lists.linux.dev, 
- linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <rc-b1-20261110-vc-170-6561daaaf6bd@gmail.com>
-References: <rc-b1-20261110-vc-170-6561daaaf6bd@gmail.com>
-Date: Fri, 27 Nov 2026 13:59:30 +0100
-Message-Id: <179578437089.42564.6953197767312597216.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795784406; l=238;
- i=maarten@zanders.be; s=20261117; h=from:subject:message-id;
- bh=59DQD1G1iSgtJQdIAgk4d9+k79+O6x9lxm3IYgwvoOo=;
- b=e3D19xOOtoV2U718Mz3lwuPTVFovPhvY4KEDtNZeLW3iio1fbftSSU1cuK6NptmQs54s5MxUU
- z9GsWJ5AbhVB35PSMvVvKXGDoeAYyKrtynrwXKswgN0UH5OVRyVc7XF
-X-Developer-Key: i=maarten@zanders.be; a=ed25519;
- pk=9vkWF6gtn9DS+97n+W487XUEhrI3+9cvA7Fdon8T1uI=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 26 Nov 2026 21:32:39 +0800, Yige Jiang <yigejiang86@gmail.com> wrote:
-> mtd: rawnand: gpmi: fix probe error path when CONFIG_PM=N
+On 27/11/2026 at 11:33:09 +02, Tudor Ambarus <tudor.ambarus@linaro.org> wro=
+te:
 
-Reviewed-by: Maarten Zanders <maarten@zanders.be>
+> On 11/25/26 7:51 PM, Miquel Raynal wrote:
+>> This is only build tested for the moment and sent as an RFC because this
+>> topic has raised a lot of questions, there may be things I have
+>
+> There's no ambiguity that this is the right direction, change bytes with
+> cycles. As a matter of fact I tried this in the past as well, posted
 
--- 
-Maarten Zanders <maarten@zanders.be>
+Thanks!
+
+> something and then couldn't allocate time for a new revision. You may try
+> to search the set, if you haven't already, and check what the feedback was
+> at the time.
+
+I haven't found your series, but I found some of your answers to Sergiu
+(iirc).
+
+Let's see until where this version goes :-)
+
+Cheers,
+Miqu=C3=A8l
