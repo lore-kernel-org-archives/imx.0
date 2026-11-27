@@ -1,88 +1,117 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795793900;
-	b=Lu5nkoVUOcOP7j6LBzO7jR4j8paNvZgEGlti6kyrodUdESXcZxOowgWqmzZfa3LPLo7U
-	 jN4DellcFJ1Sim/L3ZDZxsKmPYXrkvoP6QLBiJ7xtJX+hY8t9Ed+T2vaw3jKHlhKz5W4U
-	 rEPu6xWXIx7U0r/qgP5Fdea57BPSk6w9VErDWnRIjIvNd/crmDNp0fOziwCR2m2yxEPet
-	 RiHaYO2HXW8RXnueA7vM3P4ymTbRHPSzNLGlN4qQT4AHsi6a81BGHviFNxe0WeBxEvXqK
-	 244vkcdOC+hqdofdfOM1sA3glpGDbbL6FNdRzSSgn7DC0r5reKhuRMHNayPDQLDLcSQ==
+	t=1795797636;
+	b=F2x8+tY62bx3hvqz/5xfGfWO6NE7iemg5LL96ZJqSxQ5td06hjQoInvt5upp8vD3bUq3
+	 hme1u32rk/ZeeqyVn02U1BXZ1/W085UwwSfq5yUYrcxHv5NhZmgjlU1s3YqvKukSZloaN
+	 O1FRRuGzTV6WETRcKrQyQJebSooY/nHU+vXl8wKWtrNZVz+Bxu7s2WjKfOq+OGjdogFsG
+	 OY8Jd39LoCebJ77dVVVgrNX7exrvtaUeP4l3pfrZoD50JbEK5170s4FcAgrols5PxM/fG
+	 VxXmU126BVLKYVcVDuXRTkR9S/oNkDbS9brVkKA29tKyuDkWf2UYOomG8gzB1Drib5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795793900;
-	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:
-	 X-Source-L:X-Exim-ID:X-Source:X-Source-Args:X-Source-Dir:
-	 X-Source-Sender:X-Source-Auth:X-Email-Count:X-Org:X-Source-Cap:
-	 X-Local-Domain:X-CMAE-Envelope;
-	bh=ixVHN+f6bXwbfLfqFXi/FG437hi5R5SCUVq9nvoVZsI=;
-	b=H4SHlOfSse/LPK6T+sRTVbQx49HmkDh+j+rwt+pQcECu9Cd4QG8GfkMG5yUj5JmCg7eT
-	 SAQdetxpgvqvPnMd0BHzNZlm9RqDGfRQgnN+Qm9Eq/RP5HiGxmFuMGCFRI8bq8Zp8irra
-	 k7CspMF9JmLI5N/PxwN5/36RnmqLhwVHF1MTG4FYBXFvpYZZzbYSAQV41RNjo148zCtgW
-	 cYyxpRIcaNNDly6DpQLTTE+nAgRbwjCAX/AvBc7HLBPHdklLXbpBWhn41treAHxr/P24v
-	 /e7a7+DVl32DMwJNjdCyOiogSqcEpnEpV89QF8IGkj6q4ozueceNTLuwaSw52uTHzGA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795797636;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=XUwqQ76NdAJUSx0nAgTzca4PsZDjn9b3TAqsJayi8ig=;
+	b=S9mnyW2l7Mn3XCRUvSurhI/4wGzDGIl0lGOAjq8d6sY1TLCj6TaUt2frF8ahSct1Z14A
+	 GhC0BUT53dVzF0qUkqE2epkdBpsBtN3szVJql+JOPXDuHx2/2wzpS7frQJ8SO/oeQ4unW
+	 YTMyPOzB4k8loC07G+QvgDxkoz4NTrGzLaHxKNW9v70Z9mKbUrwqh/warW4TUrUNJkFjI
+	 1dUTQSI1XIlNCDU75nHM7HE7lfD60X900sxVbl+t26dhYOUp1f+kO7q8iaWzTK+Z9/gN0
+	 PL9SGBDLxjLSjNnjZfwxQ1nEOOiyCWh1ERcgadTCmh9zGop58Whaz6NGi0K9LvGBElg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=roeck-us.net;
-	spf=fail smtp.mailfrom=roeck-us.net;
-	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=YcL0qfny;
-	arc=none smtp.remote-ip=44.202.169.39
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linaro.org;
+	spf=pass smtp.mailfrom=linaro.org;
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=mNCvgrsR;
+	arc=none smtp.remote-ip=209.85.215.172
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D009606A324
-	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 15:38:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D009606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E03606A69D
+	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 16:40:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 05E03606A69D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=YcL0qfny
-Received: from eig-obgw-5002b.ext.cloudfilter.net ([10.0.29.226])
-	by cmsmtp with ESMTPS
-	id WwzTxeV25OOJnWy1jxiKEg; Fri, 27 Nov 2026 15:38:19 +0000
-Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
-	by cmsmtp with ESMTPS
-	id Wy1exnOQhb2qJWy1exruH5; Fri, 27 Nov 2026 15:38:15 +0000
-X-Authority-Analysis: v=2.4 cv=A7tsP7WG c=1 sm=1 tr=0 ts=6b09a3ea
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=M0FbrtG7MMAA:10 a=p-LfKV-GAAAA:8
- a=VwQbUJbxAAAA:8 a=sOfCyYYy1NGfjWDh088A:9 a=CjuIK1q_8ugA:10
- a=97BuGM4RKn6GwmfqMd6i:22 a=KPbNTLLc3YvdawN95zVk:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ixVHN+f6bXwbfLfqFXi/FG437hi5R5SCUVq9nvoVZsI=; b=YcL0qfnyoM1bBp23CVqi1J2zfM
-	CiSXjtSQ7WGuRmME88zFXxggvDHzcN55VJ2FADsqbqXksEbU4FgbKbtczbcFrItzUBqP7ehb+VRu9
-	aJ4m0h5qAiNwObhhPlH1AiEWg/JgLuPRwprU+kwLdmCwdpGSaDeoonKUiZ8bdgjztLnscmzfC869t
-	eXHDiaHA8nn60bNiYatqhKXLUKAJXmN3rLfnxs52tS3+xcnhMVK02XjPPK2suwTPVqXZmUMJ4Ik4Z
-	V+oPk80B2Isk6XZ3cOKiII+w/fmFYJVgl4aBna4RR9RuC7v1vNbYGWiS9Su94jiFPA1LZraFZTBP5
-	qo2h6kbQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:53908 helo=server.roeck-us.net)
-	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <linux@roeck-us.net>)
-	id 1xWy1c-00000002P4I-45YY;
-	Fri, 27 Nov 2026 21:08:13 +0530
-Date: Fri, 27 Nov 2026 07:38:11 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Lukasz Majewski <lukma@nabladev.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=mNCvgrsR
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cde0daf3a2aso3628875a12.3
+        for <imx@lists.linux.dev>; Fri, 27 Nov 2026 08:40:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1795797634; x=1796402434; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XUwqQ76NdAJUSx0nAgTzca4PsZDjn9b3TAqsJayi8ig=;
+        b=mNCvgrsRPT/a8X4uid/7JF7kPjfX0Yc4Ium/OicmKEhjA9b5BmhXEKBrNChmckAVPT
+         8c2W3ixr0/rKtWD8bb7pHZa6avJiXD4WqBVotTecyrFls4/aJ5OTpiYz5FmzYl8tkqN8
+         XNm8xoybJCEDLSY9isO5idob20yHd4LRF3bnIhP9LxwkF3zODYQ1YWkJqFC1HGLvdDXf
+         5yxXQiz3ecz7BjqZhkvnhUCr0ttj7OvCQrJVYPHgY2RSjr/+8lUi1wyHtFT+lISX1jpd
+         mFmcUZWK5wya8nyo9LwlfLdGQ5uk95b7N/gUCNuFIcTF1YyhN88DCiaXAziEYY5o0Y4t
+         u+Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795797634; x=1796402434;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XUwqQ76NdAJUSx0nAgTzca4PsZDjn9b3TAqsJayi8ig=;
+        b=Y0ZEP3zq6xI0j85UGpiGR/Dd1p60aFxiV04nZYR7kQgc9YSRWh0wemaoaLYho7oHM1
+         ShPnT/MNFcc9FcesK68waNozSi7ovxOX4/vqECpaDF7VdxgAGBOqiww+sWU2oCQJIFHL
+         Ej74HdUJeVUQZLs28I0sJWZIKVJoDR3iE1hqqOpqGdHB+hmRtVpoMbtVW3tXkqnF3rdH
+         LUODOlwYp5g4ONcwalN54RgFPqkn1fIHnM8Eqg+W/xpNSlpS4ycNm1x8p9WTdoBLUiNN
+         qdBQjNrYK34o1Nid8+4mrGtxAHjOSC4uF8WH/NOC2QzRIpsUnN4WMQ0HXvTx7HKiBN9Z
+         fnnQ==
+X-Forwarded-Encrypted: i=1; AL+hErH0R4UG0Ttfk1dPXAv7z1gJbVrcv/jF1heUp5bmIVGxPjJa0Fu1gYyKekKbM26rmLjVAKg=@lists.linux.dev
+X-Gm-Message-State: APuU4Z8TQq0STpVNFct5tfiP2yFOKUVAKBzuYXGkrIeG0fYwUBjzGVaV
+	ntAhkhy7oMqYYYwKacQYFLdX3NS0aBlRj1Yhl/El1yd3w9591S/7U7rsX/eN4tg7vO4=
+X-Gm-Gg: AZFdTZfkwKB5IFZEjFzzUjdj0tMnSwVwAj2wZBEsQQ4vQBi6bCqRH419ZOSl9TZnbNL
+	JSXZfOgY1ubmymseoGSHY/g2bmoyqPjVhm9dzh7WreRDHIRw/rlHZ9ggJNNvcgpWNTtSg53ZwQ+
+	MUY7KedWP8UEZnTf5siei1vFBMOw1MFSUTFAhhl+lIvyeBsKQDyQqln+GjFHkPAUgT/yUU1KXDt
+	GObITpb67QbCw64pdjU/B8Is6MbQ/kCjimqWswLyKGb9FDmvxJ8b92e3bN0EKDhnKQhUWRc7T3H
+	LjyBzo+g+ag/3O+rCriuEGr1t4A1XLSAfcdFv1TKALJD2UG9kJcalX4AugFNMMrfi3V/MwRnSke
+	a17apQyGd9jXFxAvqB90ssGh1M5ehIsUDv5b7oykXqEL7yqyz/gzGswWIf7Jv8EE9XZ2cW9gdLy
+	JZFsJSth7wd9mVkFqLD6eVugKjVDTcYO5gXA92MATtfyHrny7O6w1toQ8FhGo+cCltR4WkXFNtd
+	4Xjj0jyzfdN8XRxkP0xSSgF3k2OwL49EUlzNSTk/Qs8NUeQfxloDlYhzf+l5GAczmstoBCqDX9X
+	a3Da52cM0tPaYmg5V129tfrIwtH2BkuX
+X-Received: by 2002:a17:90b:224e:b0:3b4:22d:e066 with SMTP id 98e67ed59e1d1-3b41c7d6061mr24239538a91.5.1795797634227;
+        Fri, 27 Nov 2026 08:40:34 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:6d00:8302:1937:74ad])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0b2c4sm38838830a91.4.2026.11.27.08.40.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 08:40:33 -0800 (PST)
+Date: Fri, 27 Nov 2026 10:40:30 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, "Rob Herring (Arm)" <robh@kernel.org>,
+	Sjur =?iso-8859-1?Q?Br=E6ndeland?= <sjur.brandeland@stericsson.com>,
+	Alex Elder <elder@kernel.org>, Andrew Davis <afd@ti.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Brian Swetland <swetland@google.com>,
+	Clement Leger <cleger@kalray.eu>,
+	Daniel Baluta <daniel.baluta@nxp.com>, De Leon <x0095078@ti.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Guzman Lugo <fernando.lugo@ti.com>,
+	Hari Kanigeri <h-kanigeri2@ti.com>, Hari Nagalla <hnagalla@ti.com>,
+	HyeongJun An <sammiee5311@gmail.com>, imx@lists.linux.dev,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	Loic Pallardy <loic.pallardy@st.com>, Mark Grosen <mgrosen@ti.com>,
+	Ohad Ben-Cohen <ohad@wizery.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] dt-bindings: hwmon: Add National/TI LM77
- temperature sensor
-Message-ID: <1c56cd6a-18f2-4104-9d5d-1c6bff6dc848@roeck-us.net>
-References: <20261126124402.3015577-1-lukma@nabladev.com>
- <20261126124402.3015577-2-lukma@nabladev.com>
+	Rishabh Bhatnagar <rishabhb@codeaurora.org>,
+	Robert Tivy <rtivy@ti.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Siddharth Gupta <sidgup@codeaurora.org>, Suman Anna <s-anna@ti.com>,
+	Tero Kristo <t-kristo@ti.com>, Uday Khare <udaykhare77@gmail.com>
+Subject: Re: [PATCH 00/10] remoteproc: Assorted bug fixes across remoteproc
+ core and drivers
+Message-ID: <awmyfo4HYoQ2dqKT@p14s>
+References: <20261123172140.3547896-1-lee@kernel.org>
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -92,42 +121,84 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20261126124402.3015577-2-lukma@nabladev.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1xWy1c-00000002P4I-45YY
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (server.roeck-us.net) [108.223.40.66]:53908
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 7
-X-Org: HG=direseller_whb_net_legacy;ORG=directi;
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHVHn4tulBFxfzp0Ph02J//rccrRaEahguv5vix0wyHOh2KWC4traO5G3DRz5tO7UAPan5D3rfvWdDe1COAuolgrIYn+JBjdsy6e4Sg9l1knHeRs9+kT
- ccVafBibMSj7nKDHZSg+Khw5GRY+9psrt7K7+D6wJOHc/WQuaRom9Aek2Uwsa8CSqlhqJGzehnm3vyKiS+FD8janOUWPIzAua28=
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261123172140.3547896-1-lee@kernel.org>
 
-On Thu, Nov 26, 2026 at 01:44:01PM +0100, Lukasz Majewski wrote:
-> Add binding description for National/TI LM77 temperature sensor.
-> When compared to LM75 - it has two output pins one for interrupt
-> and another one to signal the critical temperature alarm.
-> 
-> It also has only two I2C address pins (A0 and A1) - possible I2C
-> addresses are: 0x4[89ab].
-> 
-> Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Hi,
 
-Applied.
+On Mon, Nov 23, 2026 at 05:20:44PM +0000, Lee Jones wrote:
+> These issues were reported by Sashiko.
+> 
+> None of these changes have been tested on physical hardware.
+> 
+> Cc: "Rob Herring (Arm)" <robh@kernel.org>
+> Cc: "Sjur Brændeland" <sjur.brandeland@stericsson.com>
+> Cc: Alex Elder <elder@kernel.org>
+> Cc: Andrew Davis <afd@ti.com>
+> Cc: Beleswar Padhi <b-padhi@ti.com>
+> Cc: Bjorn Andersson <andersson@kernel.org>
+> Cc: Brian Swetland <swetland@google.com>
+> Cc: Clement Leger <cleger@kalray.eu>
+> Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> Cc: De Leon <x0095078@ti.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Guzman Lugo <fernando.lugo@ti.com>
+> Cc: Hari Kanigeri <h-kanigeri2@ti.com>
+> Cc: Hari Nagalla <hnagalla@ti.com>
+> Cc: HyeongJun An <sammiee5311@gmail.com>
+> Cc: imx@lists.linux.dev
+> Cc: Iuliana Prodan <iuliana.prodan@nxp.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-arm-msm@vger.kernel.org
+> Cc: linux-remoteproc@vger.kernel.org
+> Cc: Loic Pallardy <loic.pallardy@st.com>
+> Cc: Mark Grosen <mgrosen@ti.com>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Ohad Ben-Cohen <ohad@wizery.com>
+> Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+> Cc: Peng Fan <peng.fan@nxp.com>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rishabh Bhatnagar <rishabhb@codeaurora.org>
+> Cc: Robert Tivy <rtivy@ti.com>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Cc: Siddharth Gupta <sidgup@codeaurora.org>
+> Cc: Suman Anna <s-anna@ti.com>
+> Cc: Tero Kristo <t-kristo@ti.com>
+> Cc: Uday Khare <udaykhare77@gmail.com>
+> 
+> Lee Jones (10):
+>   remoteproc: core: Fix integer overflow in rproc_check_carveout_da()
+>   remoteproc: k3: Fix integer overflow in k3_rproc_da_to_va()
+>   remoteproc: omap: Fix integer overflow in omap_rproc_da_to_va()
+>   remoteproc: elf_loader: Fix overflow in rproc_elf_load_segments()
+>   remoteproc: imx_rproc: Avoid stale mailbox pointers on request failure
+>   remoteproc: imx_rproc: Register SCU cleanup after resource acquisition
+>   remoteproc: qcom: Clear glink->node on allocation failure
+>   remoteproc: qcom: Skip unregistering uninitialised SSR subdevice
+>   remoteproc: imx_dsp_rproc: Fix pointer stride in
+>     imx_dsp_rproc_memset()
+>   remoteproc: imx_dsp_rproc: Fix off-by-one bitmask for trailing bytes
+>
+
+Other than patches 7 and 8 that will be handled by Bjorn, I have applied this
+set.
 
 Thanks,
-Guenter
+Mathieu
+ 
+>  drivers/remoteproc/imx_dsp_rproc.c         | 10 ++++---
+>  drivers/remoteproc/imx_rproc.c             | 33 ++++++++++++++--------
+>  drivers/remoteproc/omap_remoteproc.c       | 11 +++++---
+>  drivers/remoteproc/qcom_common.c           |  5 ++++
+>  drivers/remoteproc/remoteproc_core.c       |  7 ++---
+>  drivers/remoteproc/remoteproc_elf_loader.c |  6 ++--
+>  drivers/remoteproc/ti_k3_common.c          | 27 +++++++++++-------
+>  7 files changed, 61 insertions(+), 38 deletions(-)
+> 
+> -- 
+> 2.56.1.750.gf70dc682cf-goog
+> 
