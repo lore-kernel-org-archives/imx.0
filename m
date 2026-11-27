@@ -1,83 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795771465;
-	b=oahacUeW93EMuCyqPkoCUm6CLJIoyDEzPDt/v3hPq4cLSkk8i1LqvMLWw5jOnhelr7TQ
-	 iIfvaVn4ZBez463uHXzUflu5cVnWIVVrFqGYkNYZJvyiYyxS1zAiEDWFjeVaLfZ3gDuXu
-	 Tx0N9XdSnXJsiPuuFNMncqqbVfF4fvs4gyQoMPb/g8nzaXaN/JJPSXcxbheDUUBffPU/0
-	 2jzrDVwufCMOwrcAUfC0G+qZCo9yw47Hu5QlL9CytshA7P4LLm4C5wxj3H81ajQb4FTuB
-	 m0pZOKRTubXn/Xo1qiF3YSo6++fGKsOtlsHk2/eecNX8TUdbrDqwBwJABjw3vY2+gUQ==
+	t=1795771505;
+	b=vFenThhNCDMFmBm3r75+vq8sF1YJyoT97l2tlg+YVSKmBFeMcu/j9aYs8DpTcUWLVbU9
+	 2oDcmWsPmEMALF+1BZ3GVWlahuMLR+MPfOkMU2jsfY8io4NIO8iC4BVFqQ/MZDR1zF9OI
+	 AlGDFGz5riM+pKmSoiENkyia96rF7kgxCeJj8HbGV7EsJS39jHUCZvS8G0WHQsWkwBg8d
+	 UPioop9jIUGrmnceWgFwz9bashe0+ssUyaDbhAwtbFs2lq5NcuiQGgSVJMnKJfS6mGl3v
+	 aqT3A6mkwCqJZAz75dsB5uOIL0XkWGHh/mnw4yPSERWzUTCVXbyHdHVLV9Cb53Be5gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795771465;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:X-Last-TLS-Session-Version;
-	bh=jgyHrYPYaDcdHaZArH0qgJYcR9o9hCgTJicEvymP6v8=;
-	b=ZT4dE7Z0XnBAC54pJmLO73DIX+vnSY8tPxkGGdMI7ddFU/AB8WDAtme8OCJHdiso0U5E
-	 g4M1eLiLyD/3mJIfTuLCW7rL2S45rYjZlbmgpXKNJPQTFF5ApqxXL6gFMvH8J3L/oChAQ
-	 aogNqCllsnDJDULqIuZyJBvF38cQREort72f2JMfgS4dhczfFroQtUXx+SCxsNkr+ynOW
-	 YEFSi1xUay4Gkw/tpY91/hQjjhuHXhe5tO7qofyRIuaA1gR/ObrembWU7ZCjzjgkBg4z/
-	 GzSarM9NNlUyMgX1peBxosGcxoiS5al+Ee+tQ53N6OMDqvdk8HhDfmtMrjxsaP3goHA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795771505;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=KNCW80EKkgkub+KVtT9hArODSp8/RAIXlPuXxJ4OBRA=;
+	b=AdREuejncT8RZsxyOCNVjahd5CTyAeCScgu6N4CHgvi+T4FsbBC9yexmB5jrWNywg9uw
+	 7Nd/5TCVPkNiAufuPtOM7jqjwTbI83lY0dIlccIXnbZzztUkhhQ9XzTuKbCj0LAOQSGnt
+	 r1wzERaNzCyd+DRDYMpHUlgpJo1TOX+pSy6azc/LAYOCxMbcTw7taIU/zyh7SlKzXSQTm
+	 wD6bqoutFxYtxSrPEWCgAxaCZnyLT86C3NseeuWqYoT0rgh7eqgws8U5+jDrM3z7E6NFJ
+	 R2Ty/pTYFgSb0Oxlax1uC/fj6TMMbUGNHKU+BX4rj9Q7tj+3Af7kWFJ5GAoCjUkpFLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ChK2eBW3;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OlUtTJFd;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F61606A338
-	for <imx@lists.linux.dev>; Fri, 27 Nov 2026 09:24:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29F61606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D5C606A31C;
+	Fri, 27 Nov 2026 09:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ChK2eBW3
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id BC5964E41795;
-	Fri, 27 Nov 2026 09:24:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8FE9B6049C;
-	Fri, 27 Nov 2026 09:24:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 91E7911E68208;
-	Fri, 27 Nov 2026 10:24:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795771461; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=jgyHrYPYaDcdHaZArH0qgJYcR9o9hCgTJicEvymP6v8=;
-	b=ChK2eBW3QA2qWNgV4nzPcBWiNDgSUQbUP3CFkm5tJ3dgq3pwKNZ7d2io3wmtshAvuLTDnJ
-	rFCuTJItE3Q0cWqM9tZf30r3HG1BYdatVjX3FDF6Ze+q1N17Op46peLjuXWC7g6FdMP/NK
-	cJtdSEZCegXdsb1JCxfCnY8iqgTflNi9lMAXSG+2pOz2BPMGcABM6CaM3u79CeLmTLuEB7
-	gYaie9l2X6JTKG7StX171IBZOqc993Pxx7aGob00lAKAZO0gGDbvbc8fZZNhB70ztq97z3
-	GG0auLCldd4x6TcwpRLqJsskrFO94QU0HdCnir6Ab7CQb4K86a9agvMNsEM8lg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Bough Chen <haibo.chen@oss.nxp.com>
-Cc: sashiko-reviews@lists.linux.dev,  Mark Brown <broonie@kernel.org>,
-  Liang Yang <liang.yang@amlogic.com>,  Feng Chen <feng.chen@amlogic.com>,
-  Xianwei Zhao <xianwei.zhao@amlogic.com>,  Han Xu <han.xu@nxp.com>,  Conor
- Dooley <conor.dooley@microchip.com>,  Valentina Fernandez
- <valentina.fernandezalanis@microchip.com>,  Daire McNamara
- <daire.mcnamara@microchip.com>,  Haibo Chen <haibo.chen@nxp.com>,  Jyan
- Chou <jyanchou@realtek.com>,  Yu-Chun Lin <eleanor.lin@realtek.com>,
-  Maxime Coquelin <mcoquelin.stm32@gmail.com>,  Alexandre Torgue
- <alexandre.torgue@foss.st.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  Michael Walle <mwalle@kernel.org>,  Takahiro Kuwano
- <takahiro.kuwano@infineon.com>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  Alvin Zhou <alvinzhou@mxic.com.tw>,
-  Cheng Ming Lin <chengminglin@mxic.com.tw>,
-  linux-amlogic@lists.infradead.org,  imx@lists.linux.dev,
-  linux-stm32@st-md-mailman.stormreply.com,  linux-mtd@lists.infradead.org,
-  Frank.Li@kernel.org,  neil.armstrong@linaro.org
-Subject: Re: [PATCH RFC 08/16] spi: fsl-qspi: Consume dummy cycles directly
-In-Reply-To: <20261127085632.44irp2necxfqbbn2@shlinux89> (Bough Chen's message
-	of "Fri, 27 Nov 2026 16:56:32 +0800")
-References: <20261125-macronix-upstreaming-spi-mem-cycles-v1-0-fd036402fd37@bootlin.com>
-	<20261125-macronix-upstreaming-spi-mem-cycles-v1-8-fd036402fd37@bootlin.com>
-	<sashiko-outbox-233875@kernel.org>
-	<20261127085632.44irp2necxfqbbn2@shlinux89>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Fri, 27 Nov 2026 10:24:11 +0100
-Message-ID: <87zeuutyo4.fsf@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OlUtTJFd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBA71F00897;
+	Fri, 27 Nov 2026 09:24:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795771504;
+	bh=KNCW80EKkgkub+KVtT9hArODSp8/RAIXlPuXxJ4OBRA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=OlUtTJFdtNqo7bfs/0hvDfkw1m3FMg5ZIMMYbahEh/4dsBc72y3jfWgaerA6VOnKQ
+	 lt5ackU7cWPKRs1oO9sDT8vPTSOkkSVObb2st0mS3brQLMwyK7cXhPqRlWxt5djiVe
+	 VkpUxbuCrrMAhdmkEcO5RdRldDZ41rTNiSCXjbGKn7bg++02yrdF0BZ8iNveXHphff
+	 +4hDPe5FI/2tRy+6p9lpAxH3mHorWUuqkzxOIJlhzwWzEF3Gxm8BuJwJjLlHqXPWMB
+	 1kluh2kZuzNXIoyJM4LS0FL07yPU9LMY6P1kj2gIo8/smVVqUQyI6JN1S2zfgdrmSX
+	 t6BMwNop2JamA==
+From: Lee Jones <lee@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+ Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ =?utf-8?q?J=C3=A9r=C3=A9mie_Dautheribes?= <jeremie.dautheribes@bootlin.com>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, mfd@lists.linux.dev, 
+ linux-doc@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+In-Reply-To: <20261120-dev-b4-aaeon-mcu-driver-v10-0-a756687e7997@bootlin.com>
+References: <20261120-dev-b4-aaeon-mcu-driver-v10-0-a756687e7997@bootlin.com>
+Subject: Re: [PATCH v10 0/5] Add support for AAEON SRG-IMX8P MCU
+Message-Id: <179577149953.44397.11685484329530619531.b4-ty@b4>
+Date: Fri, 27 Nov 2026 09:24:59 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -87,21 +77,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.16-dev-ad80c
 
+On Fri, 20 Nov 2026 08:23:52 +0100, Thomas Perrot (Schneider Electric) wrote:
+> This patch series introduces support for the AAEON SRG-IMX8P embedded
+> controller (MCU). The MCU is connected via I2C and provides GPIO and
+> watchdog functionality for the SRG-IMX8P board.
+> 
+> The series includes:
+> - Device tree binding for the MFD driver
+> - MFD driver that serves as the core driver for the MCU
+> - GPIO driver implementing the GPIO functionality
+> - Watchdog driver for system monitoring
+> - MAINTAINERS entry for the new drivers
+> 
+> [...]
 
->> [Severity: High]
->> Does fsl_qspi_mem_caps also need .dummy_cycles = true?
->> 
->> fsl_qspi_mem_caps only sets .per_op_freq = true.  Without .dummy_cycles =
->> true, spi_mem_convert_dummy() converts any dummy cycles to op->dummy.nbytes
->> and sets op->dummy.ncycles = 0 before invoking the driver callbacks.  As a
->> result, op->dummy.ncycles is always 0 in fsl_qspi_supports_op() and
->> fsl_qspi_prepare_lut(), so dummy validation is skipped and LUT_DUMMY is
->> never programmed into the hardware LUT for operations requiring dummy
->> cycles.
->
-> Correct, need .dummy_cycles = true
+Applied, thanks!
 
-Yes, I forgot to add the capability there.
+[1/5] dt-bindings: vendor-prefixes: Add AAEON vendor prefix
+      commit: 8754d4912daa776faa2525f5e6277a18d40fd939
+[2/5] dt-bindings: mfd: Add AAEON embedded controller
+      commit: 62eb7223813ba41684a22494de046e240f20240a
+[3/5] mfd: aaeon: Add SRG-IMX8P MCU driver
+      commit: 001731afc45c1d8b2724346cd806c02064032ed5
+[4/5] gpio: aaeon: Add GPIO driver for SRG-IMX8P MCU
+      commit: 10237675f88d8b90eb958ab123f2cdd2c61705d4
+[5/5] watchdog: aaeon: Add watchdog driver for SRG-IMX8P MCU
+      commit: 7f99cacfe2793d19acdea392b46592b0c605845c
+
+--
+Lee Jones [李琼斯]
+
