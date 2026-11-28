@@ -1,56 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.22
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.27
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795850643;
-	b=Rtcb354/IeTA7U5VJijEXejJKO7GgBBv2PBbPg7DIHTv7QZqUzOuouLOQwNEqXeAnDDg
-	 mh5nFZw0Eh9w5NoS3wjHvsKOdfYMEPqvDm8LOD2RIzl4A1zM1Ul8QoKDEHKpwIRJHCz2r
-	 lJdLErZjp+lXO7Fm7sQc+mMFXSuXW6q83ceYdal+44HPVeyk11Z8LUlX+m/hhl73gPzqC
-	 pDGCKIZdF8d2g2BnLXotxB11m8pLzY3FWYA5vbKf6PFhQw4itkJBo1zEcXtkybZhqekT3
-	 SWVZ3NDxSwxSMMWet0Wh7sP1O/3FxXabbr04M/KkvBPqF8qmMzOOI1W5jDi6wQ8qj3g==
+	t=1795850649;
+	b=Ex+iZj2TG0frZN9Qw2t+ukhRMc4SSRmF5WWO2S+pVT38DxYBDlyNhYlw3idtroH6z+Ia
+	 A72IQlIWa53Eppeig1WtaXlyGtkhT/GGlfIokPUnh7xpANVipRVAyA1KHSAF0HFSaviBB
+	 adnZWbopuMvaXkapY9g9Oyc69mufoMZ7htXnwwJOL437BXGFtPIitpZHifYPhJd0topJy
+	 LYG1p4+AoGAuxFgo1bnZxU+CSAyU53nLnpow1oziAlNCaGsu1PN55gVk9o124e5V1kKEN
+	 yVvqUpaYZzuC42C46IbuDDaXGC3EZb4iSUZ1sxoYMEuunCkkvntBY2SSy1lH9ideB7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795850643;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795850649;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer;
-	bh=OIWmkoz/ccsbm5cn7EmTYj2aMiZyDkUZdfHw4MfKgFo=;
-	b=Dh+GrqHNeqnKhTFY0qBV7ghCO0sKGeLJJrt06gY4pQvBu06judeMAWiaeUCiJL9IuDbB
-	 46p24LSL6l0ml14bF9oanqU8u7pWq5+ZZ1ReWKTeNfd3LOkQLNSkKpaC8QHXpSCOfSLdA
-	 +dKzFuSm0MDr7L52Hwy7szmMyqhkImf6vINEHQyf1xmjmUAAiB+UbiFS1bNjQWMH9L5hF
-	 djbdmY4CS0NfIFWTszjMfzQ+O9dCMrLiDKDdvhwVFWpYNmiWbsCG/SZBn6UUhNUumVU2T
-	 HpcDbh5Qkzuulc/F9ThkdL03Jlaer2y4zsXXwT1GgqSfQiFyWpR0ZGA4fi3BBZ253sw==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer;
+	bh=3dD30kkDq+twXvmPdRGbIYvvHT+vV41N3PnWvxsqQh0=;
+	b=OFoAoy2Bz0ecVzOFa0slAxlWmqok9nFNZBO5nFDtDku0R7xC7fmh9LyBOCyGB2nqwRtQ
+	 gWoSJq6kuj1Y3a/a/kkd5pKS1kMEVxk68IeNdHf0fV9/PxSQAO7I+h0Tt5HUU29vLDQnO
+	 VYbmSZCnxy09fXeGxWHcY2VUxXfdOg0aKR1/y/5d9KTKaujEnGaI+7sn14gUFVv9nwWAT
+	 iRafDOsCfbfBRal1h6YTJrQvwbOlpQkQIkmKVoaNyJVaTJTUK8AEYzOlPZoxxdU/G6pvp
+	 MSUIt8c238rOYY8932es4uHnNQ7r1lsrM9UgZHctAyuVVq0FyBngy5RbRKRPMlv3K/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gkw6QUX0;
-	arc=none smtp.remote-ip=95.215.58.22
-Received: from mta1.migadu.com (out-22.mta1.migadu.com [95.215.58.22])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EPQlQYgD;
+	arc=none smtp.remote-ip=95.215.58.27
+Received: from mta1.migadu.com (out-27.mta1.migadu.com [95.215.58.27])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C51606A321
-	for <imx@lists.linux.dev>; Sat, 28 Nov 2026 07:24:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03C51606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F174606A31C
+	for <imx@lists.linux.dev>; Sat, 28 Nov 2026 07:24:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F174606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gkw6QUX0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EPQlQYgD
 X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=OPu6r00w5pS02VTnfc0Mf76uvr/kyRzj7ytYywT4JJE=;
+DKIM-Signature: a=rsa-sha256; bh=eaVBVC8MLtVKTzsFu2ZH4BwVLKqluakkDvqjSBNObiQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795850638; v=1; x=1796455438;
- b=gkw6QUX02l+Z2O4I8nIeNT+rEHcakpT4EEY+wbFl3xqB//oYdbXvzldnENs0K1dmFTnhFwAb
- aw4ms+PG3af52IXVr5GTDxSoPdKB1RoRTMl9Y1apzrcLwNAyfMRZxJYWDFjRk3fkIxglHwibjww
- 5j9i6pZlvlb5Zv4unNUtL4JA=
+ t=1795850646; v=1; x=1796455446;
+ b=EPQlQYgD6Hyo/p6oalXsixk3UyKEk0x7ISyTQtVfL0+3PgHg2wKOqcV9PKQ8SDWKcnWoZ136
+ spO9Gt6gsl5IEnhrU8NKWbiDdYsU67bCsMKPUmp2mNvSY9zNwc7umlo1Ki4KFsZlmQRpQKuXMhn
+ AHhioTFO7jVv6fvXfvCj9uWA=
 X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 64b7477b175854f2;
-	Sat, 28 Nov 2026 07:23:58 +0000
-X-Mizu-Trace-ID: 64b7477b175854f2
+Received: by smtp.migadu.com with ESMTPS id 02089df3548f31c9;
+	Sat, 28 Nov 2026 07:24:06 +0000
+X-Mizu-Trace-ID: 02089df3548f31c9
 X-Migadu-Flow: FLOW_OUT
 From: Peng Fan <peng.fan@linux.dev>
-Subject: [PATCH 0/9] arm64: dts: imx: Correct PCA945x PMIC interrupt type
-Date: Sat, 28 Nov 2026 15:23:45 +0800
-Message-Id: <20261128-pca945-int-v1-0-f3fe2beb2b51@nxp.com>
+Date: Sat, 28 Nov 2026 15:23:46 +0800
+Subject: [PATCH 1/9] arm64: dts: imx8mp-debix-model-a: Correct PMIC
+ interrupt type
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -62,10 +62,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQyML3YLkREsTU93MvBJdC2MjU0MTs2RjY+MUJaCGgqLUtMwKsGHRsbW
- 1AJnSAjNcAAAA
-X-Change-ID: 20261128-pca945-int-8325146c333d
+Message-Id: <20261128-pca945-int-v1-1-f3fe2beb2b51@nxp.com>
+References: <20261128-pca945-int-v1-0-f3fe2beb2b51@nxp.com>
+In-Reply-To: <20261128-pca945-int-v1-0-f3fe2beb2b51@nxp.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -83,50 +82,36 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
 X-Mailer: b4 0.14.3
 
-The IRQ_B pin of the PCA9450/PCA9451A/PCA9452 PMICs is an active-low
-open-drain output. The interrupt must therefore be described as level-low
-rather than edge-triggered.
+From: Peng Fan <peng.fan@nxp.com>
 
-The pca9450 regulator driver was fixed to request IRQF_TRIGGER_LOW in
-commit 5d0efaf47ee9 ("regulator: pca9450: Correct interrupt type"), which
-is already upstream in v7.0-rc4. Device trees that still describe the
-interrupt as edge-triggered no longer match the requested type, and the
-GPIO/pca953x irqchip rejects the mapping:
+The IRQ_B pin of the PCA9450 PMIC is an active-low open-drain output.
+It is pulled low when an unmasked interrupt status bit changes and is
+released high only after the processor reads the INT1 register, so the
+interrupt must be described as level-low instead of edge-triggered.
 
-  irq: type mismatch, failed to map hwirq-3 for gpio@30200000!
+This matches the IRQF_TRIGGER_LOW flag requested by the pca9450 driver
+since commit 5d0efaf47ee9 ("regulator: pca9450: Correct interrupt type").
 
-This series updates all i.MX device trees under
-arch/arm64/boot/dts/freescale/ that use a PCA945x PMIC with an interrupt,
-so that the interrupt is declared with IRQ_TYPE_LEVEL_LOW.
-
+Fixes: c86d350aae68 ("arm64: dts: Add device tree for the Debix Model A Board")
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
-Peng Fan (9):
-      arm64: dts: imx8mp-debix-model-a: Correct PMIC interrupt type
-      arm64: dts: imx8mp-skov: Correct PMIC interrupt type
-      arm64: dts: imx8mp-tx8p-ml81: Correct PMIC interrupt type
-      arm64: dts: imx91-11x11-evk: Correct PMIC interrupt type
-      arm64: dts: imx91-11x11-frdm: Correct PMIC interrupt type
-      arm64: dts: imx93-9x9-qsb: Correct PMIC interrupt type
-      arm64: dts: imx93-11x11-evk: Correct PMIC interrupt type
-      arm64: dts: imx93-11x11-frdm: Correct PMIC interrupt type
-      arm64: dts: imx93-14x14-evk: Correct PMIC interrupt type
+ arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts     | 2 +-
- arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi        | 2 +-
- arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi        | 2 +-
- arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts          | 2 +-
- arch/arm64/boot/dts/freescale/imx91-11x11-frdm.dts         | 2 +-
- arch/arm64/boot/dts/freescale/imx93-11x11-evk-common.dtsi  | 2 +-
- arch/arm64/boot/dts/freescale/imx93-11x11-frdm-common.dtsi | 2 +-
- arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts          | 2 +-
- arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts            | 2 +-
- 9 files changed, 9 insertions(+), 9 deletions(-)
----
-base-commit: e5aad2bdbbee783611d32599f89cea3f12f9593d
-change-id: 20261128-pca945-int-8325146c333d
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+index 201cf7f5eb0e..e756994f0b68 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+@@ -140,7 +140,7 @@ pmic@25 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_pmic>;
+ 		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
++		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+ 
+ 		regulators {
+ 			buck1: BUCK1 {
 
-Best regards,
 -- 
-Peng Fan <peng.fan@nxp.com>
+2.56.0
 
