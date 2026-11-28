@@ -1,56 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.254.49.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795850737;
-	b=iyfVB5U9IY77tsqsBcHMsF6XVulxyRBt+mEjiueWXdzuiF4yrP0j6zVAfWp6Hy3naZUO
-	 /t5uju7OP5EakUyWHcP9nekwVoWaWeHOSOU4lo8s6LJCidw7/Ejcrlp9pdjI2+TPPoaCl
-	 bQGXQrBaejfGVI2DZqwwibOlT/PoOe0fY9sSoG9XFF7NDQtJQK7Bgx4wumR0cLB5fr15k
-	 7go0ehsAuussJx6IG0oG5DdRHUDrMuI1GCcMHgTmArlrDu/GbRDVohnYZT9DVVbUtKsDB
-	 XRG9lHgufMUE1ECp9E22n3a4WsedO+h6CiJ8VppjP4Bjt0IJsqzdtzbryS9EVisW8wA==
+	t=1795859140;
+	b=CHr/UNcvxR+7alkf87jELrF37Bvu2H4DuJdUrSeVT0FBgAmdYYH4cf/S88FUsOj2ah52
+	 5Qr3zxSapDVQ3AoD2lZ+Jr3vTRmhL4ZQpF6XzeYlleqzN+iNcHMLulYQQ0XwFDqtiFNgZ
+	 QMbh53WaaXhN3Vz5iTCeRJU9TjrajRTmsGKSF9Z5nkW5qcSyLSufAepVR6w5/aAW1sq73
+	 SAht6W4yoYopLqfL701sTTOKOZLGmkDFGFJy9sb1hwIUZ13Y27l9neXPh5KK7wRHXc00b
+	 5nCgTFsNWr3QeHla2eSacG3/wRhOa2rOz8vVy1em4IEgkMkB8jX9z59oW9ZdnGOhHBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795850737;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer;
-	bh=thuMnY1Y7FgenakyzsB3yPXKssmGikdQB8INeJ6GvlM=;
-	b=Qbuf6g9Izukn70PPbaDCdXHSqop8YrPoe6Xqy4chrBLoZ3udsprJz1Qy6fLVEobGKx8K
-	 op3lDLXQaGyTvcTIWdnyomNeHRDHWB5SoyX8d87IcZQUcKjRTTEiSAUSd1ziieuauQiFb
-	 ksH5ruvR1xhdVaegKrdJHgfMwsNqA1TWC/1uIW30Aa5I1TmL56YxdOxRyM4FdE0Bc+Wjc
-	 byxalsrcxfzGUhVrYQ87daRBqUKPfKRRb/ng9vH/1QtNtrgCdCPSOGJDDKdjiTCQQa5rj
-	 kF8FE7mYUDFPxp6wwf4mija/zDQbisuOMu5wIHCi/+eevT3/webxkqSpcxeo35Sgcgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795859140;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:X-HM-Tid:X-HM-MType:
+	 X-HM-Spam-Status:DKIM-Signature;
+	bh=Fs7O+eNvSRnORnlfh+nW6WQaWDaKnXDIBeTMvJDr2Ik=;
+	b=km5eDLbyhMT6MloZTmtjDdt8b20CJ4DoDJilfX+4jvPMuDpmf83tJ+r9dnOc9gUzjJMs
+	 7/n8GsYGEp/+p0lUD9XK+36jEqD8TMq9dfJETW9NLbu04+Z27O0wnVGG84gWr8yQO7JUe
+	 /fDIIbDnHIuMWgU9YC1Ca1aKu/pVezztJEWp2x7skijrW8XR0kdMQIKuQH94wtFWJIGF+
+	 g2n8OcMDas7t9bNaMWhQkOwiWtzN1u+BAE6Yy5yar22233hydlzaAyCwQbd/9US6Lkxgp
+	 /ujB1jlJ7sXUaRP/flvbMa7H8svIYlvUhoR004ERPak6hYv426x85NoFyQidXTb/scQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=f0HEQfO6;
-	arc=none smtp.remote-ip=91.218.175.188
-Received: from mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=mail.sdu.edu.cn;
+	spf=pass smtp.mailfrom=mail.sdu.edu.cn;
+	dkim=pass header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=gZjZ9faR;
+	arc=none smtp.remote-ip=45.254.49.197
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45093606A31F
-	for <imx@lists.linux.dev>; Sat, 28 Nov 2026 07:25:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45093606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444D6606A31C
+	for <imx@lists.linux.dev>; Sat, 28 Nov 2026 09:45:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 444D6606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.sdu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.sdu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=f0HEQfO6
-X-Envelope-To: imx@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=51hwY1o14oX+MOnxNp+vuJaEJYw2uZkkz/JZQfKTnow=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795850735; v=1; x=1796455535;
- b=f0HEQfO63KuCgtglHZNC1PaHYXwpbnIZHgBD92UBSsaXdGxKorh/eZeq0H8iMKghZsIYG/8M
- QS16gx+vogft0T4vQlxqPmx54v3q/x/JuErvxWP9MWDv+ZWsSwTpmH/1L2zXDVPBkRCEi8o0BYi
- xPtiGqkl4UDYTxlVtuEyQzpw=
-X-Envelope-To: imx@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 86307319ec90920a;
-	Sat, 28 Nov 2026 07:25:33 +0000
-X-Mizu-Trace-ID: 86307319ec90920a
-X-Migadu-Flow: FLOW_OUT
-From: Peng Fan <peng.fan@linux.dev>
-Date: Sat, 28 Nov 2026 15:23:54 +0800
-Subject: [PATCH 9/9] arm64: dts: imx93-14x14-evk: Correct PMIC interrupt
- type
+	dkim=pass (1024-bit key) header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=gZjZ9faR
+Received: from lgs.. (unknown [101.76.249.61])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 5655b0882;
+	Sat, 28 Nov 2026 17:45:35 +0800 (GMT+08:00)
+From: Guangshuo Li <liguangshuo@mail.sdu.edu.cn>
+To: abelvesa@kernel.org,
+	sboyd@kernel.org,
+	bmasney+clk@redhat.com,
+	jbrunet+clk@baylibre.com,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	m202171776@hust.edu.cn,
+	peng.fan@nxp.com,
+	dzm91@hust.edu.cn,
+	lyx2022@hust.edu.cn,
+	zero12113@hust.edu.cn,
+	mr.bossman075@gmail.com
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/2] clk: imx: Manage OF clock provider lifetimes
+Date: Sat, 28 Nov 2026 17:45:34 +0800
+Message-ID: <20261128-f81b700d6c-u08-0@mail.sdu.edu.cn>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -60,58 +67,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261128-pca945-int-v1-9-f3fe2beb2b51@nxp.com>
-References: <20261128-pca945-int-v1-0-f3fe2beb2b51@nxp.com>
-In-Reply-To: <20261128-pca945-int-v1-0-f3fe2beb2b51@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Daniel Scally <dan.scally@ideasonboard.com>, 
- Marco Felsch <m.felsch@pengutronix.de>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, 
- Maud Spierings <maudspierings@gocontroll.com>, Joy Zou <joy.zou@nxp.com>, 
- Joseph Guo <qijian.guo@nxp.com>, Francesco Valla <francesco@valla.it>, 
- Steven Yang <steven.yang@nxp.com>, Lei Xu <lei.xu@nxp.com>, 
- Fabian Pflug <f.pflug@pengutronix.de>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa2218bba9c03a1kunmf5913c094520b8
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSEtOVk1DGEMYTElMQx8dGVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKS0pVTE1VSU9CVU1KWVdZFhoPEhUdFFlBWU9LSFVKS0lCQ0
+	NMVUpLS1VLWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=gZjZ9faR9SR3yMhZ9o+qYHpO6PHRjODg8jF6LlU6VPed+GNNstr8SbKKn3IEFYjlK1JPYd/FK8wG0n7BshZBmX9ceRsl1XplkJVRoT2EmDWFWtDyQXeq2TZ97xPUY8Q10zhPKpd6rqlDwdzVbCKKC0Bu7GUIbnkt8kTPRwVn+1w=; c=relaxed/relaxed; s=default; d=mail.sdu.edu.cn; v=1;
+	bh=Fs7O+eNvSRnORnlfh+nW6WQaWDaKnXDIBeTMvJDr2Ik=;
+	h=date:mime-version:subject:message-id:from;
 
-From: Peng Fan <peng.fan@nxp.com>
+Pair provider registration with teardown in the i.MX8M, i.MX93 and i.MX
+RT1050 clock drivers.
 
-The IRQ_B pin of the PCA9452 PMIC is an active-low open-drain output.
-It is pulled low when an unmasked interrupt status bit changes and is
-released high only after the processor reads the INT1 register, so the
-interrupt must be described as level-low instead of edge-triggered.
+Guangshuo Li (2):
+  clk: imx: Manage the OF clock providers for i.MX8M and i.MX93
+  clk: imxrt1050: Fix potential use-after-free on unbind
 
-This matches the IRQF_TRIGGER_LOW flag requested by the pca9450 driver
-since commit 5d0efaf47ee9 ("regulator: pca9450: Correct interrupt type").
-
-Fixes: 3fea8d144923 ("arm64: dts: imx93: add pca9452 support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts b/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
-index 1081881028b2..71f04b40e4da 100644
---- a/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
-@@ -341,7 +341,7 @@ pmic@25 {
- 		compatible = "nxp,pca9452";
- 		reg = <0x25>;
- 		interrupt-parent = <&pcal6524>;
--		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
- 
- 		regulators {
- 			buck1: BUCK1 {
-
--- 
-2.56.0
-
+base-commit: d8f05ec001e838cdb94fc14efa7c411e676f9ab9
