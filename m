@@ -1,67 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795822910;
-	b=ewHvn92Rv62vwMN5RjUfPbO43ZW36/ytdoVvlsEGrTJUWG0eT7harh2xYuOiKtm7odZ7
-	 w9rRS9CIvAU3/H5XoAnMobBKnVC+hyEH4GMH1wfa+gxbwPWkKq/Sjfc9Ak+r2MT7V8GJo
-	 YE/vmWZi8fir6EZjbNo30GPTXEK4vA5xmQPigfBIexKFWLOojPj7arFGAnz8Fi1POO9iE
-	 fhaO4cMK3Mgd/Q6hZAutB8/jlhgknIhLIhKMBMLyMM+uGoSr1u3GaMiEnvIGISgY5jsAE
-	 0xvt7JrH3/XE6DMvrT8POfrW1RdYZ0jeFSKOJ2ui6DUtr9Of2zjNtOA263UsHJyE5TQ==
+	t=1795837167;
+	b=fFmcdB9WbB3v8NO0zaK1iRDVGGx8ciwj2eV2vq2FO5xn6jsebPS2+X6krPQ8du3KFmeg
+	 HPvtXqdIaVMQ/VZZ5/9Ddi+A+NxEYc3IAqI6yxMFy2LfdOU9fOAZ1Z0mTYlIsqmVpKtsT
+	 WGXjFvv2WxtSRwey8dVWOWYAd2yiYulw2ynhDW72HltN8gfkrNRNQ4f6+YHlDtYLSFoRr
+	 AJ3CNzdDrsJ1ZftdQS7/f/IV04aQyfZLwv3clUDL+Z1un84TiSzlci6/kBNjcQaQf6g3d
+	 c68lzO1jY7O/Jcz7ujmksvzIXVM/GiAsnKJAs8b4F9NnhRpDHjHqipcjhlZb7TsSL3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795822910;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=mqsgecR7PqnKZ+BistIBVBvlZgZqI1OMCwkWI4zhdVM=;
-	b=kqqSxhv+6dy/MNpKyNqMN3DO2qiNPGY1qNJ890hzQiBrr/0RT+H8IbBVL5HA4qhgB6gU
-	 LyjNY+Jlylkk5oL8AFC5UtpXu84KEXPr1v43YKG5PVGIg9JX4w+hih5Ty0rX2Hetd+Zpc
-	 NcGeY96DOyCnHs0Wa4qUDfs702kNPjL2721gVzrECOqyDFZsZqLUOO4MuC/ZNh3vaBKpq
-	 HLnRNBgfUWFVjnFatWgWqwDATxnNNXQQOUbsmTgmyjfSWy2k38Q6aVoop9kwUnKz0Ob/O
-	 Oqr6v5JLwhgLKjVIWRPlzDLOgsmToSzovxqSoWXXAXNX6IcYxSyYK6jEj9rstMl+FpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795837167;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=iwpb/ANF2gyhXeCfrpbIKpWjvjcwHB43qdfvqOWVk0Q=;
+	b=oByjeNh+meEkDs3fdSOZEPhp4UYH9mgOpMtmstVJqwRHSSZtb7gowet+t1Oan0B0XLeb
+	 YRHltsrm8zaCIvGMU5PeD89hurxjUKOAE5uoAmNKw2KLAYBBze/yRwoA5/hpdkEnzHKjh
+	 zeI8BleugfWzTRQHY1lahbF8bWwMcjBMb8p/RkPPMVMngNKejhJRhr2UQvTVR2equc8JA
+	 Qj5jWtznFeqpar7j4ZgCgxlnQhhx+krUIdvT9Tp5xQyEQxPErLAkZh1kLfRQgh84knuer
+	 bGEdvaIb7TjhU5Wk41ut0VgbEm8QDZK/ODBYp8AAhxX9gubv66NREWGh0mzugavB93Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Kxl56kYC;
-	arc=none smtp.remote-ip=117.135.210.3
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cXosV9qL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9070F606A31C;
-	Fri, 27 Nov 2026 23:41:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9070F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DF1606A31C
+	for <imx@lists.linux.dev>; Sat, 28 Nov 2026 03:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Kxl56kYC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
-	Content-Type; bh=mqsgecR7PqnKZ+BistIBVBvlZgZqI1OMCwkWI4zhdVM=;
-	b=Kxl56kYCm+Ih6QbjDPV2JZvJOYNAUwL0+k09ocKWVMDGCvsHmb1gma5qjdqdjl
-	XgJ6sCVW3muRrLYnDirmTvFnZS/tR1DTzNbx7pgW2a3w4BxhthU+Fdch2yulz7G3
-	kPBaxzNr4+j0nWdccXMzOBkryKDswwwzNoENuURp+boHQ=
-Received: from Ubuntu26.04LTS (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDnb+YUFQprOPgvKQ--.24533S2;
-	Sat, 28 Nov 2026 07:41:09 +0800 (CST)
-From: Jiaqi Shi <shijiaqi_develop@163.com>
-To: Hans Verkuil <hverkuil+cisco@kernel.org>,
-	linux-media@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-staging@lists.linux.dev
-Cc: Jiaqi Shi <shijiaqi_develop@163.com>,
-	slongerbeam@gmail.com,
-	p.zabel@pengutronix.de,
-	mchehab@kernel.org,
-	gregkh@linuxfoundation.org,
-	Frank.Li@nxp.com,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Subject: Re: [PATCH v6 0/2] media: imx: staging cleanup and FIM export to v4l2-core
-Date: Sat, 28 Nov 2026 07:41:07 +0800
-Message-ID: <20261127234108.641406-1-shijiaqi_develop@163.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <479b6df1-3cd7-4609-b197-86bd937b1fdd@kernel.org>
-References: <20261122114205.494704-1-shijiaqi_develop@163.com> <479b6df1-3cd7-4609-b197-86bd937b1fdd@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cXosV9qL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA99A1F00893;
+	Sat, 28 Nov 2026 03:39:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795837166;
+	bh=iwpb/ANF2gyhXeCfrpbIKpWjvjcwHB43qdfvqOWVk0Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cXosV9qL8YBxRsbctyJyTIcjyOgFzo1fU1+/2vxHoGpc1LjMA4V1zFGbzq6teZ2oM
+	 +sizqhfunX3ZtnDHSfYVaVUwIshXYSpH3oIY5QMTMEn6KelzdkqbXYLBP/cucLpBN/
+	 vYrZitZYvi4ozMnaiFKcwzvSMmgREHaxP8JXg9J0+gIncxlWVaX9UD52XaoNImSLs+
+	 screPr+eeqBrcaymUfirVSGNAFMG6uPvFoW7nh5dKT1vqQVMvcXkKtbFg2FmKmw5sJ
+	 2WOY2Xg9lXroRZu4QJPYBR0QST/jhUO2vYekpeErfxyrc4jd//cndpqicS9X5DpwG+
+	 kIKZBIdOli3/g==
+Message-ID: <sashiko-outbox-238437@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net] net: fec: fix TSO DMA mapping failure handling
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Keisuke Tsukuda" <tkdkei@outlook.jp>
+Cc: =?utf-8?b?aW14QGxpc3RzLmxpbnV4LmRldg==?= <imx@lists.linux.dev>, Frank.Li@kernel.org
+In-Reply-To: <20261127033906.9561-1-tkdkei@outlook.jp>
+References: <20261127033906.9561-1-tkdkei@outlook.jp>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 28 Nov 2026 03:39:26 +0000
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Post: <mailto:imx@lists.linux.dev>
@@ -70,39 +58,71 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:imx+owner@lists.linux.dev>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnb+YUFQprOPgvKQ--.24533S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZw1rZFW5Ww47KFW3ur1kGrg_yoWfZrb_Zr
-	1kC3Z7Aw4DGFWfAa17Jay0vasxWFZ2k34jvwnxJ343tFWjqrWrGFWvqr4rAr1fZ3s8Arnr
-	Gwsagw1Y9wnI9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7VUbjXdUUUUUU==
-X-CM-SenderInfo: xvklyxpdtlsvxhyhz0rs6rljoofrz/xtbCzRWn+msKFRU3BgAA3V
 
-Hi Hans,
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [Critical] net: fec: use-after-free in fec_enet_txq_submit_frag_skb()
+  [1]
+--
 
-On Wed, Nov 25, 2026 at 12:00:52PM +0100, Hans Verkuil wrote:
-> In any case, don't move it to the core.
+commit 456fe9a775ff2f95a222a719c8b31ab3edda1c33
+Author: Keisuke Tsukuda <tkdkei@outlook.jp>
 
-Agreed, I'll drop the FIM export patch. For context, it was driven by the
-first item in drivers/staging/media/imx/TODO:
+net: fec: fix TSO DMA mapping failure handling
 
-  - The Frame Interval Monitor could be exported to v4l2-core for
-    general use.
+This commit fixes TSO DMA mapping error handling by returning -ENOMEM from
+the descriptor helpers, keeping the first descriptor unready until all
+mappings succeed, and preserving BD_ENET_TX_WRAP during descriptor cleanup.
 
-Since you don't want it in the core, that TODO item should probably be
-updated or removed, otherwise the next person will try the same thing.
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethe=
+rnet/freescale/fec_main.c
+> index f7636f23d1ebb..a2c760218e839 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
 
-On the FIM itself: I'm not aware of a documented userspace use-case for
-these private controls and events, so if you'd rather remove it, I can do
-that as a separate patch. It would only touch the imx FIM helper and the
-CSI driver. Would you like me to do that?
+[ ... ]
 
-The other patch in the series (removing legacy control inheritance and
-source-dependent format handling) is independent of FIM and implements the
-remaining TODO items. I'll resend it on its own.
+> @@ -922,7 +927,7 @@ static int fec_enet_txq_submit_tso(struct fec_enet_pr=
+iv_tx_q *txq,
+>  					 DMA_TO_DEVICE);
+> =20
+>  		/* Clear standard buffer descriptor fields */
+> -		tmp_bdp->cbd_sc =3D 0;
+> +		tmp_bdp->cbd_sc &=3D cpu_to_fec16(BD_ENET_TX_WRAP);
+>  		tmp_bdp->cbd_datlen =3D 0;
+>  		tmp_bdp->cbd_bufaddr =3D 0;
+> =20
 
-Regards,
-Jiaqi
+[Severity: Critical]
+This problem wasn't introduced by this patch, but does
+fec_enet_txq_submit_frag_skb() leave BD_ENET_TX_READY set on unmapped
+fragment descriptors on DMA mapping failure [1]?
 
+drivers/net/ethernet/freescale/fec_main.c:fec_enet_txq_submit_frag_skb() {
+	...
+		bdp->cbd_sc =3D cpu_to_fec16(status);
+	}
+
+	return bdp;
+dma_mapping_error:
+	bdp =3D txq->bd.cur;
+	for (i =3D 0; i < frag; i++) {
+		bdp =3D fec_enet_get_nextdesc(bdp, &txq->bd);
+		dma_unmap_single(&fep->pdev->dev, fec32_to_cpu(bdp->cbd_bufaddr),
+				 fec16_to_cpu(bdp->cbd_datlen), DMA_TO_DEVICE);
+	}
+	return ERR_PTR(-ENOMEM);
+}
+
+Each mapped fragment writes status with BD_ENET_TX_READY to bdp->cbd_sc,
+and dma_mapping_error unmaps earlier fragments without clearing
+BD_ENET_TX_READY or advancing txq->bd.cur.  If the next transmitted packet
+uses fewer descriptors than the aborted one, the trailing stale descriptors
+remain marked ready and the MAC can DMA-read from the unmapped addresses.
+
+[1] https://sashiko.dev/#/bug/linux-ad99904c-d478-49a5-bb3b-e4124919a833
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127033906.9561=
+-1-tkdkei@outlook.jp?part=3D1
